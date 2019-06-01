@@ -1,69 +1,30 @@
-import * as express from "express";
-import { Request, Response } from "express";
-import * as bodyParser from "body-parser";
-import FeedWorker from "./feed.worker";
 import * as mongoose from "mongoose";
-import { Feed } from "./schema";
-import Worker from "./worker.interface";
-import Queue from "./queue.interface";
-import WorkerQueue from "./queue";
+import Queue from "./interfaces/queue.interface";
+import WorkerQueue from "./utils/queue";
+import * as express from "express";
+import * as bodyParser from "body-parser";
+import router from "./routes";
 
+const app = express();
+app.use(bodyParser.json());
 
 export default class Main {
-  is_running: boolean = false;
-  worker_queue: Queue = new WorkerQueue();
-  app = express();
-  PORT = 3000;
+  private is_running: boolean = false;
+  private worker_queue: Queue = new WorkerQueue();
 
   constructor() {
-    this.app.use(bodyParser.json());
   }
 
   setupDatabase = (): void => {
     mongoose.connect("mongodb://127.0.0.1:27017/test", {
       useNewUrlParser: true
     });
-  };
-
-  setupRoutes = (): void => {
-    this.app.get("/", (req: Request, res: Response) => {
-      res.send({
-        message: "hello worlds"
-      });
+    app.listen(3000, () => {
+      console.log("server started at http://localhost:3000");
     });
-    this.app.get("/abc", (req: Request, res: Response) => {
-      res.send({
-        message: "hello worlds"
-      });
-    });
-    this.app.post("/add_feeds", (req: Request, res: Response) => {
-      req.body.urls.forEach(url => {
-        let feed_worker: Worker = new FeedWorker("worker", url);
-        this.worker_queue.add_worker(feed_worker);
-      })
-      res.send({
-        message: "hello"
-      });
-    });
-    this.app.get("/get_feeds", (req: Request, res: Response) => {
-      Feed.find({}).exec((err, data) => {
-        res.send({
-          message: data
-        });
-      });
-    });
-  };
-
-  startServer = (): void => {
-    if (require.main === module) {
-      this.app.listen(this.PORT, () => {
-        console.log("server started at http://localhost:" + this.PORT);
-      });
-    }
+    app.use('/', router);
   };
 }
 
 let main = new Main();
-main.setupRoutes();
-main.startServer();
 main.setupDatabase();

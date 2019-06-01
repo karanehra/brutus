@@ -86,29 +86,6 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./node_modules/webpack/buildin/module.js":
-/*!***********************************!*\
-  !*** (webpack)/buildin/module.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = function(module) {\n\tif (!module.webpackPolyfill) {\n\t\tmodule.deprecate = function() {};\n\t\tmodule.paths = [];\n\t\t// module.parent = undefined by default\n\t\tif (!module.children) module.children = [];\n\t\tObject.defineProperty(module, \"loaded\", {\n\t\t\tenumerable: true,\n\t\t\tget: function() {\n\t\t\t\treturn module.l;\n\t\t\t}\n\t\t});\n\t\tObject.defineProperty(module, \"id\", {\n\t\t\tenumerable: true,\n\t\t\tget: function() {\n\t\t\t\treturn module.i;\n\t\t\t}\n\t\t});\n\t\tmodule.webpackPolyfill = 1;\n\t}\n\treturn module;\n};\n\n\n//# sourceURL=webpack:///(webpack)/buildin/module.js?");
-
-/***/ }),
-
-/***/ "./src/feed.worker.ts":
-/*!****************************!*\
-  !*** ./src/feed.worker.ts ***!
-  \****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\nvar __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nvar __generator = (this && this.__generator) || function (thisArg, body) {\n    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;\n    return g = { next: verb(0), \"throw\": verb(1), \"return\": verb(2) }, typeof Symbol === \"function\" && (g[Symbol.iterator] = function() { return this; }), g;\n    function verb(n) { return function (v) { return step([n, v]); }; }\n    function step(op) {\n        if (f) throw new TypeError(\"Generator is already executing.\");\n        while (_) try {\n            if (f = 1, y && (t = op[0] & 2 ? y[\"return\"] : op[0] ? y[\"throw\"] || ((t = y[\"return\"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;\n            if (y = 0, t) op = [op[0] & 2, t.value];\n            switch (op[0]) {\n                case 0: case 1: t = op; break;\n                case 4: _.label++; return { value: op[1], done: false };\n                case 5: _.label++; y = op[1]; op = [0]; continue;\n                case 7: op = _.ops.pop(); _.trys.pop(); continue;\n                default:\n                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }\n                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }\n                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }\n                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }\n                    if (t[2]) _.ops.pop();\n                    _.trys.pop(); continue;\n            }\n            op = body.call(thisArg, _);\n        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }\n        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };\n    }\n};\nexports.__esModule = true;\nvar Parser = __webpack_require__(/*! rss-parser */ \"rss-parser\");\nvar schema_1 = __webpack_require__(/*! ./schema */ \"./src/schema.ts\");\nvar FeedWorker = /** @class */ (function () {\n    function FeedWorker(name, url) {\n        var _this = this;\n        this.is_executing = false;\n        this.is_finished = false;\n        this.parser = new Parser();\n        this.parse = function () { return __awaiter(_this, void 0, void 0, function () {\n            var feed, feed_object;\n            var _this = this;\n            return __generator(this, function (_a) {\n                switch (_a.label) {\n                    case 0:\n                        console.log(this.feed_url);\n                        return [4 /*yield*/, this.parser.parseURL(this.feed_url)];\n                    case 1:\n                        feed = _a.sent();\n                        feed_object = new schema_1.Feed({\n                            name: feed.title,\n                            url: feed.feedUrl,\n                        });\n                        feed_object.save().then(function () {\n                            console.log(\"added\");\n                            _this.cb_on_finish();\n                            _this.is_executing = false;\n                            _this.is_finished = true;\n                        });\n                        return [2 /*return*/];\n                }\n            });\n        }); };\n        this.execute = function (cb) {\n            _this.is_executing = true;\n            _this.cb_on_finish = cb;\n            _this.parse();\n        };\n        this.name = name;\n        this.feed_url = url;\n    }\n    return FeedWorker;\n}());\nexports[\"default\"] = FeedWorker;\n\n\n//# sourceURL=webpack:///./src/feed.worker.ts?");
-
-/***/ }),
-
 /***/ "./src/index.ts":
 /*!**********************!*\
   !*** ./src/index.ts ***!
@@ -117,31 +94,55 @@ eval("\nvar __awaiter = (this && this.__awaiter) || function (thisArg, _argument
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("/* WEBPACK VAR INJECTION */(function(module) {\nexports.__esModule = true;\nvar express = __webpack_require__(/*! express */ \"express\");\nvar bodyParser = __webpack_require__(/*! body-parser */ \"body-parser\");\nvar feed_worker_1 = __webpack_require__(/*! ./feed.worker */ \"./src/feed.worker.ts\");\nvar mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\nvar schema_1 = __webpack_require__(/*! ./schema */ \"./src/schema.ts\");\nvar queue_1 = __webpack_require__(/*! ./queue */ \"./src/queue.ts\");\nvar Main = /** @class */ (function () {\n    function Main() {\n        var _this = this;\n        this.is_running = false;\n        this.worker_queue = new queue_1[\"default\"]();\n        this.app = express();\n        this.PORT = 3000;\n        this.setupDatabase = function () {\n            mongoose.connect(\"mongodb://127.0.0.1:27017/test\", {\n                useNewUrlParser: true\n            });\n        };\n        this.setupRoutes = function () {\n            _this.app.get(\"/\", function (req, res) {\n                res.send({\n                    message: \"hello worlds\"\n                });\n            });\n            _this.app.get(\"/abc\", function (req, res) {\n                res.send({\n                    message: \"hello worlds\"\n                });\n            });\n            _this.app.post(\"/add_feeds\", function (req, res) {\n                req.body.urls.forEach(function (url) {\n                    var feed_worker = new feed_worker_1[\"default\"](\"worker\", url);\n                    _this.worker_queue.add_worker(feed_worker);\n                });\n                res.send({\n                    message: \"hello\"\n                });\n            });\n            _this.app.get(\"/get_feeds\", function (req, res) {\n                schema_1.Feed.find({}).exec(function (err, data) {\n                    res.send({\n                        message: data\n                    });\n                });\n            });\n        };\n        this.startServer = function () {\n            if (__webpack_require__.c[__webpack_require__.s] === module) {\n                _this.app.listen(_this.PORT, function () {\n                    console.log(\"server started at http://localhost:\" + _this.PORT);\n                });\n            }\n        };\n        this.app.use(bodyParser.json());\n    }\n    return Main;\n}());\nexports[\"default\"] = Main;\nvar main = new Main();\nmain.setupRoutes();\nmain.startServer();\nmain.setupDatabase();\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node_modules/webpack/buildin/module.js */ \"./node_modules/webpack/buildin/module.js\")(module)))\n\n//# sourceURL=webpack:///./src/index.ts?");
+eval("\nexports.__esModule = true;\nvar mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\nvar queue_1 = __webpack_require__(/*! ./utils/queue */ \"./src/utils/queue.ts\");\nvar express = __webpack_require__(/*! express */ \"express\");\nvar bodyParser = __webpack_require__(/*! body-parser */ \"body-parser\");\nvar routes_1 = __webpack_require__(/*! ./routes */ \"./src/routes.ts\");\nvar app = express();\napp.use(bodyParser.json());\nvar Main = /** @class */ (function () {\n    function Main() {\n        this.is_running = false;\n        this.worker_queue = new queue_1[\"default\"]();\n        this.setupDatabase = function () {\n            mongoose.connect(\"mongodb://127.0.0.1:27017/test\", {\n                useNewUrlParser: true\n            });\n            app.listen(3000, function () {\n                console.log(\"server started at http://localhost:3000\");\n            });\n            app.use('/', routes_1[\"default\"]);\n        };\n    }\n    return Main;\n}());\nexports[\"default\"] = Main;\nvar main = new Main();\nmain.setupDatabase();\n\n\n//# sourceURL=webpack:///./src/index.ts?");
 
 /***/ }),
 
-/***/ "./src/queue.ts":
-/*!**********************!*\
-  !*** ./src/queue.ts ***!
-  \**********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\nexports.__esModule = true;\nvar WorkerQueue = /** @class */ (function () {\n    function WorkerQueue() {\n        this.is_running = false;\n        this.workers = [];\n        this.next = this.next.bind(this);\n    }\n    WorkerQueue.prototype.next = function () {\n        this.is_running = true;\n        var worker = this.workers.shift();\n        if (worker) {\n            worker.execute(this.next);\n        }\n    };\n    WorkerQueue.prototype.add_worker = function (worker) {\n        this.workers.push(worker);\n        if (!this.is_running) {\n            this.next();\n        }\n    };\n    return WorkerQueue;\n}());\nexports[\"default\"] = WorkerQueue;\n\n\n//# sourceURL=webpack:///./src/queue.ts?");
-
-/***/ }),
-
-/***/ "./src/schema.ts":
+/***/ "./src/routes.ts":
 /*!***********************!*\
-  !*** ./src/schema.ts ***!
+  !*** ./src/routes.ts ***!
   \***********************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nexports.__esModule = true;\nvar mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\nvar FeedSchema = new mongoose.Schema({\n    name: String,\n    url: String,\n    added: {\n        type: Date,\n        \"default\": Date.now()\n    },\n    id: String\n});\nexports.Feed = mongoose.model('Feed', FeedSchema);\n\n\n//# sourceURL=webpack:///./src/schema.ts?");
+eval("\nvar _this = this;\nexports.__esModule = true;\nvar schema_1 = __webpack_require__(/*! ./utils/schema */ \"./src/utils/schema.ts\");\nvar feed_worker_1 = __webpack_require__(/*! ./utils/feed.worker */ \"./src/utils/feed.worker.ts\");\nvar express = __webpack_require__(/*! express */ \"express\");\nvar router = express.Router();\nrouter.get(\"/\", function (req, res) {\n    res.send({\n        message: \"hello worlds\"\n    });\n});\nrouter.get(\"/abc\", function (req, res) {\n    res.send({\n        message: \"hello worlds\"\n    });\n});\nrouter.post(\"/add_feeds\", function (req, res) {\n    req.body.urls.forEach(function (url) {\n        var feed_worker = new feed_worker_1[\"default\"](\"worker\", url);\n        _this.worker_queue.add_worker(feed_worker);\n    });\n    res.send({\n        message: \"hello\"\n    });\n});\nrouter.get(\"/get_feeds\", function (req, res) {\n    schema_1.Feed.find({}).exec(function (err, data) {\n        res.send({\n            message: data\n        });\n    });\n});\nexports[\"default\"] = router;\n\n\n//# sourceURL=webpack:///./src/routes.ts?");
+
+/***/ }),
+
+/***/ "./src/utils/feed.worker.ts":
+/*!**********************************!*\
+  !*** ./src/utils/feed.worker.ts ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nvar __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nvar __generator = (this && this.__generator) || function (thisArg, body) {\n    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;\n    return g = { next: verb(0), \"throw\": verb(1), \"return\": verb(2) }, typeof Symbol === \"function\" && (g[Symbol.iterator] = function() { return this; }), g;\n    function verb(n) { return function (v) { return step([n, v]); }; }\n    function step(op) {\n        if (f) throw new TypeError(\"Generator is already executing.\");\n        while (_) try {\n            if (f = 1, y && (t = op[0] & 2 ? y[\"return\"] : op[0] ? y[\"throw\"] || ((t = y[\"return\"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;\n            if (y = 0, t) op = [op[0] & 2, t.value];\n            switch (op[0]) {\n                case 0: case 1: t = op; break;\n                case 4: _.label++; return { value: op[1], done: false };\n                case 5: _.label++; y = op[1]; op = [0]; continue;\n                case 7: op = _.ops.pop(); _.trys.pop(); continue;\n                default:\n                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }\n                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }\n                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }\n                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }\n                    if (t[2]) _.ops.pop();\n                    _.trys.pop(); continue;\n            }\n            op = body.call(thisArg, _);\n        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }\n        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };\n    }\n};\nexports.__esModule = true;\nvar Parser = __webpack_require__(/*! rss-parser */ \"rss-parser\");\nvar schema_1 = __webpack_require__(/*! ./schema */ \"./src/utils/schema.ts\");\nvar FeedWorker = /** @class */ (function () {\n    function FeedWorker(name, url) {\n        var _this = this;\n        this.is_executing = false;\n        this.is_finished = false;\n        this.parser = new Parser();\n        this.parse = function () { return __awaiter(_this, void 0, void 0, function () {\n            var feed, feed_object;\n            var _this = this;\n            return __generator(this, function (_a) {\n                switch (_a.label) {\n                    case 0:\n                        console.log(this.feed_url);\n                        return [4 /*yield*/, this.parser.parseURL(this.feed_url)];\n                    case 1:\n                        feed = _a.sent();\n                        feed_object = new schema_1.Feed({\n                            name: feed.title,\n                            url: feed.feedUrl\n                        });\n                        feed_object.save();\n                        feed.items.forEach(function (item) {\n                            var article_object = new schema_1.Article({\n                                title: item.title,\n                                content: item.content,\n                                content_snippet: item.contentSnippet,\n                                link: item.link\n                            });\n                            article_object.save().then(function () {\n                                if (feed.items.indexOf(feed) == feed.items.length + 1) {\n                                    console.log(\"added\");\n                                    _this.cb_on_finish();\n                                    _this.is_executing = false;\n                                    _this.is_finished = true;\n                                }\n                            });\n                        });\n                        return [2 /*return*/];\n                }\n            });\n        }); };\n        this.execute = function (cb) {\n            _this.is_executing = true;\n            _this.cb_on_finish = cb;\n            _this.parse();\n        };\n        this.name = name;\n        this.feed_url = url;\n    }\n    return FeedWorker;\n}());\nexports[\"default\"] = FeedWorker;\n\n\n//# sourceURL=webpack:///./src/utils/feed.worker.ts?");
+
+/***/ }),
+
+/***/ "./src/utils/queue.ts":
+/*!****************************!*\
+  !*** ./src/utils/queue.ts ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nexports.__esModule = true;\nvar WorkerQueue = /** @class */ (function () {\n    function WorkerQueue() {\n        this.is_running = false;\n        this.workers = [];\n        this.next = this.next.bind(this);\n    }\n    WorkerQueue.prototype.next = function () {\n        this.is_running = true;\n        var worker = this.workers.shift();\n        if (worker) {\n            worker.execute(this.next);\n        }\n    };\n    WorkerQueue.prototype.add_worker = function (worker) {\n        this.workers.push(worker);\n        if (!this.is_running) {\n            this.next();\n        }\n    };\n    return WorkerQueue;\n}());\nexports[\"default\"] = WorkerQueue;\n\n\n//# sourceURL=webpack:///./src/utils/queue.ts?");
+
+/***/ }),
+
+/***/ "./src/utils/schema.ts":
+/*!*****************************!*\
+  !*** ./src/utils/schema.ts ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nexports.__esModule = true;\nvar mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\nvar FeedSchema = new mongoose.Schema({\n    name: String,\n    url: String,\n    added: {\n        type: Date,\n        \"default\": Date.now()\n    },\n    id: String\n});\nexports.Feed = mongoose.model('Feed', FeedSchema);\nvar ArticleSchema = new mongoose.Schema({\n    title: String,\n    content: String,\n    content_snippet: String,\n    link: String\n});\nexports.Article = mongoose.model('Article', ArticleSchema);\n\n\n//# sourceURL=webpack:///./src/utils/schema.ts?");
 
 /***/ }),
 

@@ -1,5 +1,5 @@
-import Queue from "./queue.interface";
-import Worker from "./worker.interface";
+import Queue from "../interfaces/queue.interface";
+import Worker from "../interfaces/worker.interface";
 
 export default class WorkerQueue implements Queue {
     is_running: boolean = false;
