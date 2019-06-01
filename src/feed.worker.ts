@@ -9,6 +9,7 @@ export default class FeedWorker implements Worker {
   is_finished: boolean = false;
   feed_url: string;
   parser = new Parser();
+  cb_on_finish: Function;
 
   constructor(name: string, url: string) {
     this.name = name;
@@ -16,24 +17,24 @@ export default class FeedWorker implements Worker {
   }
 
   parse = async () => {
-      console.log(this.feed_url);
+    console.log(this.feed_url);
     
     let feed = await this.parser.parseURL(this.feed_url);
-    console.log(feed);
     let feed_object = new Feed({
       name: feed.title,
       url: feed.feedUrl,
     });
     feed_object.save().then(() => {
         console.log("added")
+        this.cb_on_finish();
         this.is_executing = false;
         this.is_finished = true;
     })
   };
 
-  execute = () => {
-    console.log("worker executing")
+  execute = (cb: Function) => {
     this.is_executing = true;
+    this.cb_on_finish = cb;
     this.parse();
   };
 }

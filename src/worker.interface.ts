@@ -3,6 +3,6 @@ export default interface Worker {
     is_executing: boolean,
     is_finished: boolean,
     feed_url: string,
-    execute(): void
+    execute(cb: Function): void
 
 }

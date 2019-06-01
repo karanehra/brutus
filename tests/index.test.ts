@@ -1,17 +1,11 @@
-import app from '../src/index';
-import * as supertest from 'supertest';
+import Main from "../src";
 
-describe('app', () => {
-  let request;
-  beforeEach(() => {
-    request = supertest(app);
-  });
-  it('should return a successful response for GET /', () => {
-    request.get('/')
-      .expect(200);
-  });
-  it('should return a successful response for GET /', done => {
-    request.get('/abc')
-      .expect(200, done);
-  });
-});
+let main = new Main();
+
+test('Main class test', () => {
+  expect(main).toBeInstanceOf(Main);
+})
+
+test('Queue not running test', () => {
+  expect(main.is_running).toBeFalsy;
+})
