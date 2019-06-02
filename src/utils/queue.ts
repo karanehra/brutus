@@ -1,6 +1,7 @@
 import Queue from "../interfaces/queue.interface";
 import Worker from "../interfaces/worker.interface";
 
+
 export default class WorkerQueue implements Queue {
     is_running: boolean = false;
     workers: Worker[] = [];

@@ -18,6 +18,9 @@ export default class FeedWorker implements Worker {
     this.logger = new Logger();
   }
 
+  /**
+   * The rss-parser function.
+   */
   private parse = async () => {
     this.logger.info("Parsing feed: " + this.feed_url);
     let feed;
@@ -37,6 +40,10 @@ export default class FeedWorker implements Worker {
     
   };
 
+  /**
+   * Write articles from feed to the database.
+   * @param items The items from the parsed feed.
+   */
   private writeArticlesToDatabase = (items:any): void => {
     this.logger.info("Adding articles from: " + this.feed_url);
     items.forEach(item => {
@@ -57,6 +64,10 @@ export default class FeedWorker implements Worker {
     });
   }
 
+  /**
+   * Starts worker exection.
+   * @param cb The callback function
+   */
   public execute = (cb: Function) => {
     this.is_executing = true;
     this.cb_on_finish = cb;

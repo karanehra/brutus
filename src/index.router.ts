@@ -6,26 +6,27 @@ import * as express from "express";
 import { Router } from "express-serve-static-core";
 import Queue from "./interfaces/queue.interface";
 
+/**
+ * The Base Router Class. 
+ * 
+ */
 export default class IndexRouter {
   private router: Router;
 	main_queue: Queue;
 
+  /**
+   * 
+   * @param worker_queue The main worker queue
+   */
   constructor(worker_queue: Queue) {
 		this.router = express.Router();
 		this.main_queue = worker_queue;
   }
 
+  /**
+   * Setup express route definitions.
+   */
   setupRoutes = () => {
-    this.router.get("/", (req: Request, res: Response) => {
-      res.send({
-        message: "hello worlds"
-      });
-    });
-    this.router.get("/abc", (req: Request, res: Response) => {
-      res.send({
-        message: "hello worlds"
-      });
-    });
     this.router.post("/add_feeds", (req: Request, res: Response) => {
       req.body.urls.forEach(url => {
         let feed_worker: Worker = new FeedWorker("worker", url);
@@ -44,6 +45,11 @@ export default class IndexRouter {
     });
   };
 
+  /**
+   * Get the class router instance.
+   * Make sure to use setupRoutes to avoid
+   * getting a null Router.
+   */
   getRouter = (): Router => {
     return this.router;
   };
