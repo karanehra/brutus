@@ -1,6 +1,7 @@
 import Worker from "../interfaces/worker.interface";
 import * as Parser from "rss-parser";
 import { Feed, Article } from "./schema";
+import Logger from "./logger";
 
 export default class FeedWorker implements Worker {
   name: Readonly<string>;
@@ -9,23 +10,36 @@ export default class FeedWorker implements Worker {
   feed_url: string;
   parser = new Parser();
   cb_on_finish: Function;
+  logger: Logger;
 
   constructor(name: string, url: string) {
     this.name = name;
     this.feed_url = url;
+    this.logger = new Logger();
   }
 
   private parse = async () => {
-    console.log(this.feed_url);
+    this.logger.info("Parsing feed: " + this.feed_url);
+    let feed;
+    try {
+      feed = await this.parser.parseURL(this.feed_url);
+      let feed_object = new Feed({
+        name: feed.title,
+        url: feed.feedUrl
+      });
+      feed_object.save();
+      this.logger.success("Parsed successfully: "+ this.feed_url);
+    } catch(e){
+      console.log(e);
+      this.logger.error("Parse Error: " + this.feed_url);
+      this.cb_on_finish();
+    }
+    
+  };
 
-    let feed = await this.parser.parseURL(this.feed_url);
-    let feed_object = new Feed({
-      name: feed.title,
-      url: feed.feedUrl
-    });
-    feed_object.save();
-
-    feed.items.forEach(item => {
+  private writeArticlesToDatabase = (items:any): void => {
+    this.logger.info("Adding articles from: " + this.feed_url);
+    items.forEach(item => {
       let article_object = new Article({
         title: item.title,
         content: item.content,
@@ -33,15 +47,15 @@ export default class FeedWorker implements Worker {
         link: item.link
       });
       article_object.save().then(() => {
-        if (feed.items.indexOf(feed) == feed.items.length + 1) {
-          console.log("added");
+        if (items.indexOf(item) == items.length - 1) {
+          this.logger.success("Articles added from: "+ this.feed_url);
           this.cb_on_finish();
           this.is_executing = false;
           this.is_finished = true;
         }
       });
     });
-  };
+  }
 
   public execute = (cb: Function) => {
     this.is_executing = true;

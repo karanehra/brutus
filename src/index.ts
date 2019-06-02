@@ -3,7 +3,7 @@ import Queue from "./interfaces/queue.interface";
 import WorkerQueue from "./utils/queue";
 import * as express from "express";
 import * as bodyParser from "body-parser";
-import router from "./routes";
+import IndexRouter from "./index.router";
 
 const app = express();
 app.use(bodyParser.json());
@@ -19,12 +19,17 @@ export default class Main {
     mongoose.connect("mongodb://127.0.0.1:27017/test", {
       useNewUrlParser: true
     });
+  };
+  setupRouting = (): void => {
     app.listen(3000, () => {
       console.log("server started at http://localhost:3000");
     });
-    app.use('/', router);
-  };
+    let router = new IndexRouter(this.worker_queue);
+    router.setupRoutes();
+    app.use('/', router.getRouter());
+  }
 }
 
 let main = new Main();
 main.setupDatabase();
+main.setupRouting();
