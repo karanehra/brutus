@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose';
 const FeedSchema = new mongoose.Schema({
     name: String,
     url: String,
-    added: {
+    last_updated: {
         type: Date,
         default: Date.now()
     },

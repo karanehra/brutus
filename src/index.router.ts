@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Feed } from "./utils/schema";
+import { Feed, Log } from "./utils/schema";
 import Worker from "./interfaces/worker.interface";
 import FeedWorker from "./utils/feed.worker";
 import * as express from "express";
@@ -28,8 +28,8 @@ export default class IndexRouter {
    */
   setupRoutes = () => {
     this.router.post("/add_feeds", (req: Request, res: Response) => {
-      req.body.urls.forEach(url => {
-        let feed_worker: Worker = new FeedWorker("worker", url);
+      req.body.urls.forEach(data => {
+        let feed_worker: Worker = new FeedWorker("worker", data);
         this.main_queue.add_worker(feed_worker);
       });
       res.send({
@@ -38,6 +38,13 @@ export default class IndexRouter {
     });
     this.router.get("/get_feeds", (req: Request, res: Response) => {
       Feed.find({}).exec((err, data) => {
+        res.send({
+          message: data
+        });
+      });
+    });
+    this.router.get("/logs", (req: Request, res: Response) => {
+      Log.find({}).exec((err, data) => {
         res.send({
           message: data
         });

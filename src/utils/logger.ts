@@ -3,7 +3,7 @@ import { Log } from "./schema";
 export default class Logger {
     info = (desciprtion:string): void => {
         let log_object = new Log({
-            desciprtion: desciprtion,
+            description: desciprtion,
             type: 'INFO'
         });
         log_object.save();
@@ -11,7 +11,7 @@ export default class Logger {
 
     success = (description: string): void => {
         let log_object = new Log({
-            desciprtion: description,
+            description: description,
             type: 'SUCCESS'
         });
         log_object.save();
@@ -19,7 +19,7 @@ export default class Logger {
 
     error = (description: string): void => {
         let log_object = new Log({
-            desciprtion: description,
+            description: description,
             type: 'ERROR'
         });
         log_object.save();
