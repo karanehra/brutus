@@ -3,7 +3,9 @@ import { databaseEmitter } from "../emitters/index";
 import { INITIALIZE_DATABASE, SYNC_DATABASE } from "../constants/events";
 import mysql2 from "mysql2";
 import Logger from "../util/logger";
-
+import ArticleModel from "../models/article";
+import FeedModel from "../models/feed";
+import LogModel from "../models/log";
 // const sequelize = new Sequelize('newdb', 'karan', 'karan', {
 //   dialect: 'mysql',
 //   dialectModule: mysql2,
@@ -39,12 +41,6 @@ databaseEmitter.on(SYNC_DATABASE, () => {
     logger.success("Databse Sync Success");
   });
 });
-
-import ArticleModel from "../models/article";
-import FeedModel from "../models/feed";
-import LogModel from "../models/log";
-import { Logger } from "mongodb";
-import Logger from "../util/logger";
 
 export const Article = ArticleModel(sequelize, Sequelize);
 export const Feed = FeedModel(sequelize, Sequelize);
