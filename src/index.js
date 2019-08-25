@@ -45,13 +45,12 @@ app.get("/", (req, res) => {
   Article.findAll().then(articles => {
     res.send(articles)
   })
-  // res.send("hello")
 })
 
-// app.get("/sync",(req,res) => {
-//   databaseEmitter.emit(SYNC_DATABASE);
-//   res.send("Database Is Syncing")
-// })
+app.get("/sync",(req,res) => {
+  databaseEmitter.emit(SYNC_DATABASE);
+  res.send("Database Is Syncing")
+})
 
 app.listen(port, () => {
   databaseEmitter.emit(INITIALIZE_DATABASE);
