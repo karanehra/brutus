@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
 import { databaseEmitter } from '../emitters/index';
-import { INITIALIZE_DATABASE } from '../constants/events';
+import { INITIALIZE_DATABASE, SYNC_DATABASE } from '../constants/events';
 import mysql2 from "mysql2";
 
 // const sequelize = new Sequelize('newdb', 'karan', 'karan', {
@@ -31,7 +31,7 @@ databaseEmitter.on(INITIALIZE_DATABASE, () => {
     });
 })
 
-databaseEmitter.on('sync', () => {
+databaseEmitter.on(SYNC_DATABASE, () => {
   sequelize.sync().then(() => {
     console.log("DbSynced");
   });

@@ -47,7 +47,7 @@ app.get("/", (req, res) => {
   })
 })
 
-app.get("/sync",(req,res) => {
+app.get("/sync", (req, res) => {
   databaseEmitter.emit(SYNC_DATABASE);
   res.send("Database Is Syncing")
 })
@@ -55,6 +55,7 @@ app.get("/sync",(req,res) => {
 app.listen(port, () => {
   databaseEmitter.emit(INITIALIZE_DATABASE);
   console.log("Server Up.")
+  console.log("env: ", process.env)
 })
 
 
