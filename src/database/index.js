@@ -1,7 +1,8 @@
-import Sequelize from 'sequelize';
-import { databaseEmitter } from '../emitters/index';
-import { INITIALIZE_DATABASE, SYNC_DATABASE } from '../constants/events';
+import Sequelize from "sequelize";
+import { databaseEmitter } from "../emitters/index";
+import { INITIALIZE_DATABASE, SYNC_DATABASE } from "../constants/events";
 import mysql2 from "mysql2";
+import Logger from "../util/logger";
 
 // const sequelize = new Sequelize('newdb', 'karan', 'karan', {
 //   dialect: 'mysql',
@@ -20,26 +21,32 @@ const sequelize = new Sequelize("newdb", "karan", "karan", {
     : undefined
 });
 
+const logger = new Logger();
+
 databaseEmitter.on(INITIALIZE_DATABASE, () => {
   sequelize
     .authenticate()
     .then(() => {
-      console.log('Connection has been established successfully.');
+      logger.success("Connected To Database Instance");
     })
     .catch(err => {
-      console.error('Unable to connect to the database:', err);
+      logger.error("Databse Connection Failed", JSON.stringify(err));
     });
-})
+});
 
 databaseEmitter.on(SYNC_DATABASE, () => {
   sequelize.sync().then(() => {
-    console.log("DbSynced");
+    logger.success("Databse Sync Success");
   });
-})
+});
+
 import ArticleModel from "../models/article";
 import FeedModel from "../models/feed";
+import LogModel from "../models/log";
+import { Logger } from "mongodb";
+import Logger from "../util/logger";
 
 export const Article = ArticleModel(sequelize, Sequelize);
 export const Feed = FeedModel(sequelize, Sequelize);
+export const Log = LogModel(sequelize, Sequelize);
 Feed.hasMany(Article);
-

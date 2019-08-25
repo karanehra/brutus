@@ -5,7 +5,9 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack --colors",
+    "build-watch": "webpack --watch --hot --colors --no-warnings",
     "start": "node build/index.js",
+    "start-watch": "nodemon build/index.js",
     "run:dev": "NODE_ENV=development nodemon build/index.js",
     "test": "jest"
   },
