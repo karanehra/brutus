@@ -53,7 +53,7 @@ app.get("/", (req, res) => {
 //   res.send("Database Is Syncing")
 // })
 
-app.listen(port,"35.202.10.179", () => {
+app.listen(port,"0.0.0.0", () => {
   databaseEmitter.emit(INITIALIZE_DATABASE);
   console.log("Server Up.")
 })
