@@ -2,13 +2,10 @@ import "babel-polyfill";
 import express from "express";
 import { databaseEmitter } from './emitters/index';
 import { INITIALIZE_DATABASE, SYNC_DATABASE } from './constants/events';
-import { Feed, Article, Log } from "./database/index";
-import Logger from './util/logger';
+import { Article, Log } from "./database/index";
 
 const app = express();
 const port = process.env.PORT || 3000;
-
-const logger = new Logger();
 
 app.get("/", (req, res) => {
   Article.findAll().then(articles => {
@@ -25,4 +22,4 @@ app.get("/logs", (req, res) => {
 app.listen(port, () => {
   databaseEmitter.emit(INITIALIZE_DATABASE);
   databaseEmitter.emit(SYNC_DATABASE);
-})
+});
