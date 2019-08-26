@@ -7,7 +7,7 @@ export default (sequelize, types) => {
     description: {
       type: types.TEXT,
     },
-    error_type:{
+    log_type:{
       type:types.ENUM,
       values: ['SUCCESS', 'ERROR', 'INFO','FATAL']
     }

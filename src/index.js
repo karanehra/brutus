@@ -16,11 +16,6 @@ app.get("/", (req, res) => {
   })
 })
 
-app.get("/sync", (req, res) => {
-  databaseEmitter.emit(SYNC_DATABASE);
-  res.send("Database Is Syncing")
-})
-
 app.get("/logs", (req, res) => {
   Log.findAll().then(logs => {
     res.send(logs)
@@ -29,5 +24,5 @@ app.get("/logs", (req, res) => {
 
 app.listen(port, () => {
   databaseEmitter.emit(INITIALIZE_DATABASE);
-  logger.success("Server Initailized On Port ", port);
+  databaseEmitter.emit(SYNC_DATABASE);
 })

@@ -5,7 +5,7 @@ export default class Logger {
     Log.create({
       title: title,
       description: description,
-      error_type: "SUCCESS"
+      log_type: "SUCCESS"
     })
   }
 
@@ -13,7 +13,7 @@ export default class Logger {
     Log.create({
       title: title,
       description: description,
-      error_type: "ERROR"
+      log_type: "ERROR"
     })
   }
 
@@ -21,7 +21,7 @@ export default class Logger {
     Log.create({
       title: title,
       description: description,
-      error_type: "INFO"
+      log_type: "INFO"
     })
   }
 
