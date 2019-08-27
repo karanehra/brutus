@@ -3,7 +3,7 @@ import express from "express";
 import { databaseEmitter } from "./emitters/index";
 import { INITIALIZE_DATABASE, SYNC_DATABASE } from "./constants/events";
 import { Article, Log, Feed } from "./database/index";
-import { parseFeed } from "./util/parsers";
+import { parseFeed, updateFeeds } from "./util/parsers";
 const bodyParser = require("body-parser");
 const app = express();
 app.use(bodyParser.json());
@@ -36,10 +36,20 @@ app.get("/feed", async (req, res) => {
   res.send(feeds).status(200);
 });
 
+app.get("/articlecount", async (req, res) => {
+  let articles = await  Article.findAll({});
+  res.send(String(articles.length)).status(200);
+});
+
 app.get("/articles", async (req, res) => {
   let articles = await Article.findAll({});
   res.send(articles).status(200);
 });
+
+app.get("/update", async (req,res) =>{
+  updateFeeds();
+  res.send("feed Update triggered")
+})
 
 app.listen(port, () => {
   databaseEmitter.emit(INITIALIZE_DATABASE);

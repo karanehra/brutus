@@ -15,6 +15,17 @@ export const parseFeed = async feedurl => {
   }
 };
 
+export const updateFeeds = async () =>{
+  try{
+    let feeds = await Feed.findAll({});
+    feeds.forEach(async feed =>{
+      await parseFeed(feed.url)
+    })
+  } catch(e){
+    console.log(e)
+  }
+}
+
 const processFeed = async feed => {
   let is_processed = await checkIfFeedExists(feed.feedUrl);
   if (!is_processed) {
