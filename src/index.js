@@ -4,6 +4,7 @@ import { databaseEmitter } from "./emitters/index";
 import { INITIALIZE_DATABASE, SYNC_DATABASE } from "./constants/events";
 import { Article, Log, Feed } from "./database/index";
 import { parseFeed, updateFeeds } from "./util/parsers";
+require("./util/cronjobs");
 const bodyParser = require("body-parser");
 const app = express();
 app.use(bodyParser.json());
