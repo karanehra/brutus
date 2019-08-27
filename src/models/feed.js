@@ -1,8 +1,8 @@
 export default (sequelize, types) => {
-  const feed = sequelize.define('feed', {
+  const feed = sequelize.define("feed", {
     title: {
       type: types.STRING,
-      allowNull: false,
+      allowNull: false
     },
     url: {
       type: types.STRING,
@@ -13,10 +13,7 @@ export default (sequelize, types) => {
     },
     description: {
       type: types.STRING
-    },
-    last_updated: {
-      type: types.DATE
     }
-  })
+  });
   return feed;
-}
+};

@@ -24,7 +24,7 @@ databaseEmitter.on(INITIALIZE_DATABASE, () => {
 });
 
 databaseEmitter.on(SYNC_DATABASE, () => {
-  sequelize.sync({ force: true })
+  sequelize.sync()
 });
 
 export const Article = ArticleModel(sequelize, Sequelize);

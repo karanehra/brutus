@@ -1,28 +1,57 @@
 import "babel-polyfill";
 import express from "express";
-import { databaseEmitter } from './emitters/index';
-import { INITIALIZE_DATABASE, SYNC_DATABASE } from './constants/events';
-import { Feed, Article, Log } from "./database/index";
-import Logger from './util/logger';
-
+import { databaseEmitter } from "./emitters/index";
+import { INITIALIZE_DATABASE, SYNC_DATABASE } from "./constants/events";
+import { Article, Log, Feed } from "./database/index";
+import { parseFeed, updateFeeds } from "./util/parsers";
+const bodyParser = require("body-parser");
 const app = express();
+app.use(bodyParser.json());
 const port = process.env.PORT || 3000;
 
-const logger = new Logger();
+global.task_queue = [];
 
 app.get("/", (req, res) => {
-  Article.findAll().then(articles => {
-    res.send(articles)
-  })
-})
+  res.send("Service Online");
+});
 
-app.get("/logs", (req, res) => {
-  Log.findAll().then(logs => {
-    res.send(logs)
-  })
+app.get("/logs", async (req, res) => {
+  try {
+    let logs = await Log.findAll({});
+    res.send(logs).status(200);
+  } catch (e) {
+    res.send("error").status(500);
+  }
+});
+
+app.post("/feed", async (req, res) => {
+  let feed_processed = await parseFeed(req.body.url);
+  feed_processed
+    ? res.send("Added").status(201)
+    : res.send("not added").status(400);
+});
+
+app.get("/feed", async (req, res) => {
+  let feeds = await Feed.findAll({});
+  res.send(feeds).status(200);
+});
+
+app.get("/articlecount", async (req, res) => {
+  let articles = await  Article.findAll({});
+  res.send(String(articles.length)).status(200);
+});
+
+app.get("/articles", async (req, res) => {
+  let articles = await Article.findAll({});
+  res.send(articles).status(200);
+});
+
+app.get("/update", async (req,res) =>{
+  updateFeeds();
+  res.send("feed Update triggered")
 })
 
 app.listen(port, () => {
   databaseEmitter.emit(INITIALIZE_DATABASE);
   databaseEmitter.emit(SYNC_DATABASE);
-})
+});

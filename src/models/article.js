@@ -13,9 +13,6 @@ export default (sequelize, types) => {
     },
     snippet: {
       type: types.TEXT
-    },
-    pub_date: {
-      type: types.DATE
     }
   })
   return article;
