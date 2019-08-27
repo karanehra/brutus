@@ -10,6 +10,9 @@ export default (sequelize, types) => {
     log_type:{
       type:types.ENUM,
       values: ['SUCCESS', 'ERROR', 'INFO','FATAL']
+    },
+    tag:{
+      type:types.STRING
     }
   })
   return log;

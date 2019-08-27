@@ -4,6 +4,7 @@ import { databaseEmitter } from "./emitters/index";
 import { INITIALIZE_DATABASE, SYNC_DATABASE } from "./constants/events";
 import { Article, Log, Feed } from "./database/index";
 import { parseFeed, updateFeeds } from "./util/parsers";
+import { dumpFeedUrls } from "./util/dumpers";
 require("./util/cronjobs");
 const bodyParser = require("body-parser");
 const app = express();
@@ -55,4 +56,5 @@ app.get("/update", async (req,res) =>{
 app.listen(port, () => {
   databaseEmitter.emit(INITIALIZE_DATABASE);
   databaseEmitter.emit(SYNC_DATABASE);
+  dumpFeedUrls();
 });

@@ -1,7 +1,11 @@
 import cron from "node-cron";
 import { updateFeeds } from "./parsers";
+import { dumpFeedUrls } from "./dumpers";
 
 cron.schedule("0 */10 * * * *", () =>{
-  console.log("Running feed Update cron")
   updateFeeds();
+})
+
+cron.schedule("* * 0 * * *", () =>{
+  dumpFeedUrls();
 })
