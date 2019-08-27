@@ -1,6 +1,6 @@
 import fs from "fs";
 import { Feed } from "../database";
-import path from "path";
+import { Article } from '../database/index';
 
 export const dumpFeedUrls = async () => {
   try {
@@ -24,3 +24,22 @@ export const dumpFeedUrls = async () => {
     console.log(e);
   }
 };
+
+export const dumpArticles = async () =>{
+  try{
+    let articles = await Article.findAll({});
+    fs.writeFile(
+      "dumps/articles.txt",
+      JSON.stringify(articles),
+      err => {
+        if (!err) {
+          console.log("file written");
+        } else {
+          console.log(err)
+        }
+      }
+    );
+  } catch(e){
+    console.log(e)
+  }
+}
