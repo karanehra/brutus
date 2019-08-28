@@ -51,7 +51,7 @@ app.get("/articlecount", async (req, res) => {
 });
 
 app.get("/articles", async (req, res) => {
-  let articles = await Article.findAll({});
+  let articles = await Article.findAll({limit:100});
   res.send(articles).status(200);
 });
 
