@@ -7,6 +7,7 @@ import { parseFeed, updateFeeds } from "./util/parsers";
 import { dumpFeedUrls } from "./util/dumpers";
 import parser from "rss-parser";
 let Parser = new parser();
+var cors = require('cors')
 
 
 
@@ -14,6 +15,7 @@ require("./util/cronjobs");
 const bodyParser = require("body-parser");
 const app = express();
 app.use(bodyParser.json());
+app.use(cors())
 const port = process.env.PORT || 3000;
 
 global.task_queue = [];
