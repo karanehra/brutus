@@ -1,37 +1,35 @@
 const path = require('path');
-const nodeExternals = require('webpack-node-externals');
-const WebpackShellPlugin = require('webpack-shell-plugin');
+const fs = require('fs');
 
+var nodeModules = {};
+fs.readdirSync('node_modules')
+  .filter(function (x) {
+    return ['.bin'].indexOf(x) === -1;
+  })
+  .forEach(function (mod) {
+    nodeModules[mod] = 'commonjs ' + mod;
+  });
 
-const {
-  NODE_ENV = 'production',
-} = process.env;
 module.exports = {
-  entry: './src/index.ts',
-  mode: NODE_ENV,
+  mode: 'development',
   target: 'node',
+  entry: './src/index.js',
   output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: 'index.js'
-  },
-  resolve: {
-    extensions: ['.ts', '.js'],
+    path: path.resolve(__dirname + '/build')
   },
   module: {
     rules: [
       {
-        test: /\.ts$/,
-        use: [
-          'ts-loader',
-        ]
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"]
+          }
+        }
       }
     ]
   },
-  externals : [nodeExternals()],
-  watch: NODE_ENV === 'development',
-  plugins: [
-    new WebpackShellPlugin({
-      onBuildEnd: ['yarn run:dev']
-    })
-  ]
+  externals: nodeModules
 }
