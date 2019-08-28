@@ -83,7 +83,7 @@ const getFeedIdFromUrl = async url => {
       url: url
     }
   });
-  return feed[0].id;
+  return feeds[0].id;
 };
 
 const checkIfArticleExists = async link => {
