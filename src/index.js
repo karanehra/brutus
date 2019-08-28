@@ -5,6 +5,11 @@ import { INITIALIZE_DATABASE, SYNC_DATABASE } from "./constants/events";
 import { Article, Log, Feed } from "./database/index";
 import { parseFeed, updateFeeds } from "./util/parsers";
 import { dumpFeedUrls } from "./util/dumpers";
+import parser from "rss-parser";
+let Parser = new parser();
+
+
+
 require("./util/cronjobs");
 const bodyParser = require("body-parser");
 const app = express();
@@ -51,6 +56,15 @@ app.get("/articles", async (req, res) => {
 app.get("/update", async (req,res) =>{
   updateFeeds();
   res.send("feed Update triggered")
+})
+
+app.post("/test", async (req,res) =>{
+  try {
+    let feed = await Parser.parseURL(req.body.url)
+    res.send(feed)
+  } catch(e){
+    res.send(e)
+  }
 })
 
 app.listen(port, () => {
