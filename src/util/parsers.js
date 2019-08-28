@@ -42,7 +42,7 @@ const processFeed = async (feed, sourceUrl) => {
       console.log(e);
     }
   } else {
-    feedid = getFeedIdFromUrl(sourceUrl);
+    feedid = await getFeedIdFromUrl(sourceUrl);
   }
   processFeedArticles(feed.items,feedid);
 };
