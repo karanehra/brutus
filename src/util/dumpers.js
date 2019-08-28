@@ -10,7 +10,7 @@ export const dumpFeedUrls = async () => {
       dump.push(feed.url);
     });
     fs.writeFile(
-      "dumps/feeds.txt",
+      "dumps/feeds-"+Date.now().toString()+".txt",
       JSON.stringify(dump),
       err => {
         if (!err) {
@@ -29,7 +29,7 @@ export const dumpArticles = async () =>{
   try{
     let articles = await Article.findAll({});
     fs.writeFile(
-      "dumps/articles.txt",
+      "dumps/articles-"+Date.now().toString()+".txt",
       JSON.stringify(articles),
       err => {
         if (!err) {
