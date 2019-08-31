@@ -6,7 +6,8 @@ module.exports = (sequelize, types) => {
     },
     link: {
       type: types.STRING,
-      allowNull: false
+      allowNull: false,
+      unique:true
     },
     content: {
       type: types.TEXT

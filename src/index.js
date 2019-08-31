@@ -3,22 +3,17 @@ import express from "express";
 import { databaseEmitter } from "./emitters/index";
 import { INITIALIZE_DATABASE, SYNC_DATABASE } from "./constants/events";
 import { Article, Log, Feed } from "./database/index";
-import {
-  parseFeed,
-  updateFeeds,
-  bulkParseFeeds,
-  checkIfFeedExists
-} from "./util/parsers";
-import { dumpFeedUrls } from "./util/dumpers";
-import parser from "rss-parser";
-let Parser = new parser();
-var cors = require("cors");
+import cors from "cors";
+import "./util/cronjobs";
 
-require("./util/cronjobs");
-const bodyParser = require("body-parser");
+import bodyParser from "body-parser";
+import { bulkUpdatePipeline, bulkparsePipelineIfNotInDb } from "./util/parsePipelines";
+import { checkIfFeedExists } from "./util/parsers";
+import { parseFeedIfInDb } from "./util/parsers";
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+
 const port = process.env.PORT || 3000;
 
 global.task_queue = [];
@@ -38,15 +33,16 @@ app.get("/logs", async (req, res) => {
 
 app.post("/feed", async (req, res) => {
   let feedExists = await checkIfFeedExists(req.body.url);
-  if (!feedExists) parseFeed(req.body.url);
+  if (!feedExists) parseFeedIfInDb(req.body.url);
   feedExists
     ? res.send("Feed already exists").status(422)
     : res.send("Adding Feeed").status(400);
 });
 
 app.post("/feed-bulk", (req, res) => {
-  let urls = [...new Set(req.body.url)];
-  bulkParseFeeds(urls);
+  // let urls = [...new Set(req.body.url)];
+  // bulkParseFeeds(req.body.url);
+  bulkparsePipelineIfNotInDb(req.body.url)
   res.send("Processing");
 });
 
@@ -63,7 +59,11 @@ app.get("/cleardb", (req, res) => {
 
 app.get("/articlecount", async (req, res) => {
   let articles = await Article.findAll({});
-  res.send(String(articles.length)).status(200);
+  let unique_articles = [...new Set(articles)]
+  res.send({
+    total:String(articles.length),
+    unique:String(unique_articles.length)
+  }).status(200);
 });
 
 app.get("/articles", async (req, res) => {
@@ -74,18 +74,28 @@ app.get("/articles", async (req, res) => {
   res.send(articles).status(200);
 });
 
-app.get("/update", async (req, res) => {
-  updateFeeds();
-  res.send("feed Update triggered");
-});
+app.get("/articlenames", async (req,res)=>{
+  let articles = await Article.findAll({
+  });
+  let data = [];
+  articles.forEach(article => data.push(article.link));
+  let unique = [...new Set(data)];
+
+  res.send({
+    total:String(data.length),
+    unique:String(unique.length)
+  }).status(200);
+})
+
+// app.get("/update", async (req, res) => {
+//   updateFeeds();
+//   res.send("feed Update triggered");
+// });
 
 app.post("/test", async (req, res) => {
-  try {
-    let feed = await Parser.parseURL(req.body.url);
-    res.send(feed);
-  } catch (e) {
-    res.send(e);
-  }
+  bulkUpdatePipeline();
+  res.send("ok")
+ 
 });
 
 app.listen(port, () => {

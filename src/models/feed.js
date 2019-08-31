@@ -6,7 +6,8 @@ module.exports = (sequelize, types) => {
     },
     url: {
       type: types.STRING,
-      allowNull: false
+      allowNull: false,
+      unique:true
     },
     image_url: {
       type: types.STRING
