@@ -6,16 +6,16 @@ const ArticleModel = require("../models/article");
 const FeedModel = require("../models/feed");
 const LogModel = require("../models/log");
 
-const sequelize = new Sequelize("newdb", "karan", "karan", {
-  dialect: "mysql",
-  dialectModule: mysql2,
-  host: process.env.CLOUD_SQL_CONNECTION_NAME
-    ? `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}`
-    : "35.202.76.46",
-  socketPath: process.env.CLOUD_SQL_CONNECTION_NAME
-    ? `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}`
-    : undefined
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    dialect: "mysql",
+    dialectModule: mysql2,
+    host: process.env.DB_HOST
+  }
+);
 
 databaseEmitter.on(INITIALIZE_DATABASE, () => {
   sequelize.authenticate();
