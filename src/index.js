@@ -1,25 +1,22 @@
-import "babel-polyfill";
-import express from "express";
-import { databaseEmitter } from "./emitters/index";
-import { INITIALIZE_DATABASE, SYNC_DATABASE } from "./constants/events";
-import { Article, Log, Feed } from "./database/index";
-import cors from "cors";
-import bodyParser from "body-parser";
-import {
+const express = require("express");
+const { databaseEmitter } = require("./emitters/index");
+const { INITIALIZE_DATABASE, SYNC_DATABASE } = require("./constants/events");
+const { Article, Log, Feed } = require("./database/index");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const {
   bulkUpdatePipeline,
   bulkparsePipelineIfNotInDb
-} from "./util/parsePipelines";
-import { checkIfFeedExists } from "./util/parsers";
-import { parseFeedIfInDb } from "./util/parsers";
-import "./util/cronjobs";
+} = require("./util/parsePipelines");
+const { checkIfFeedExists } = require("./util/parsers");
+const { parseFeedIfInDb } = require("./util/parsers");
+require("./util/cronjobs");
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
-
 const port = process.env.PORT || 3000;
-
-import cache from "memory-cache";
+const cache =require("memory-cache");
 
 app.get("/", async (req, res) => {
   let val = cache.get("appStatus");
@@ -31,9 +28,9 @@ app.get("/", async (req, res) => {
     let payload = {
       articles: articleCount,
       feeds: feedCount
-    }
-    cache.put("appStatus", JSON.stringify(payload),5000)
-    res.send(payload)
+    };
+    cache.put("appStatus", JSON.stringify(payload), 5000);
+    res.send(payload);
   }
 });
 

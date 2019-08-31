@@ -1,6 +1,6 @@
-import cron from "node-cron";
-import { dumpFeedUrls, dumpArticles } from "./dumpers";
-import { bulkUpdatePipeline } from "./parsePipelines";
+const cron = require("node-cron");
+const { dumpFeedUrls, dumpArticles } = require("./dumpers");
+const { bulkUpdatePipeline } = require("./parsePipelines");
 
 cron.schedule("0 */10 * * * *", () => {
   bulkUpdatePipeline();

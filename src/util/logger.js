@@ -1,12 +1,11 @@
-import { Log } from '../database/index';
-export default class Logger {
-
+const { Log } = require("../database/index");
+module.exports = class Logger {
   success(title, description) {
     Log.create({
       title: title,
       description: description,
       log_type: "SUCCESS"
-    })
+    });
   }
 
   error(title, description) {
@@ -14,7 +13,7 @@ export default class Logger {
       title: title,
       description: description,
       log_type: "ERROR"
-    })
+    });
   }
 
   info(title, description) {
@@ -22,7 +21,7 @@ export default class Logger {
       title: title,
       description: description,
       log_type: "INFO"
-    })
+    });
   }
 
   FATAL(title, description) {
@@ -30,7 +29,6 @@ export default class Logger {
       title: title,
       description: description,
       error_type: "FATAL"
-    })
+    });
   }
-
-}
+};

@@ -1,10 +1,9 @@
-import parser from "rss-parser";
-import { Feed, Article } from "../database/index";
+const parser = require("rss-parser");
+const { Feed, Article } = require("../database/index");
 
 let Parser = new parser();
 
-
-export const parseFeedIfInDb = async feedurl => {
+const parseFeedIfInDb = async feedurl => {
   let feed;
   try {
     feed = await Parser.parseURL(feedurl);
@@ -17,7 +16,7 @@ export const parseFeedIfInDb = async feedurl => {
   }
 };
 
-export const parseFeedIfNotInDb = async feedurl => {
+const parseFeedIfNotInDb = async feedurl => {
   let isFeedInDb = await checkIfFeedExists(feedurl);
   if (!isFeedInDb) {
     let data = await parseFeedIfInDb(feedurl);
@@ -27,7 +26,7 @@ export const parseFeedIfNotInDb = async feedurl => {
   }
 };
 
-export const checkIfFeedExists = async url => {
+const checkIfFeedExists = async url => {
   let feeds = [];
   try {
     feeds = await Feed.findAll({
@@ -41,12 +40,12 @@ export const checkIfFeedExists = async url => {
   return feeds.length > 0;
 };
 
-export const sanitizeString = datastring => {
+const sanitizeString = datastring => {
   let pattern = /(<([^>]+)>)/gi;
   return datastring.replace(pattern, "").trim();
 };
 
-export const processFeed = async (feed, sourceUrl) => {
+const processFeed = async (feed, sourceUrl) => {
   try {
     let created_feed = await Feed.create({
       title: sanitizeString(feed.title),
@@ -65,7 +64,7 @@ export const processFeed = async (feed, sourceUrl) => {
   }
 };
 
-export const processFeedArticles = async (articles, feedid) => {
+const processFeedArticles = async (articles, feedid) => {
   articles.forEach(async article => {
     try {
       await Article.create({
@@ -81,12 +80,21 @@ export const processFeedArticles = async (articles, feedid) => {
   });
 };
 
-
-export const getAllFeedUrls = async () => {
+const getAllFeedUrls = async () => {
   let feeds = await Feed.findAll({});
   let urls = [];
   feeds.forEach(feed => {
-    urls.push(feed.url)
-  })
+    urls.push(feed.url);
+  });
   return urls;
+};
+
+module.exports = {
+  parseFeedIfInDb,
+  parseFeedIfNotInDb,
+  checkIfFeedExists,
+  sanitizeString,
+  processFeed,
+  processFeedArticles,
+  getAllFeedUrls
 }
