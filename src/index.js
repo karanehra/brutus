@@ -12,6 +12,8 @@ const { checkIfFeedExists } = require("./util/parsers");
 const { parseFeedIfInDb } = require("./util/parsers");
 require("./util/cronjobs");
 
+console.log(process.env)
+
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
