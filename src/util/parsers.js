@@ -1,65 +1,29 @@
-import parser from "rss-parser";
-import { Feed } from "../database";
-import { Article } from "../database/index";
+const parser = require("rss-parser");
+const { Feed, Article } = require("../database/index");
 
 let Parser = new parser();
 
-export const parseFeed = async feedurl => {
+const parseFeedIfInDb = async feedurl => {
   let feed;
   try {
     feed = await Parser.parseURL(feedurl);
-    processFeed(feed, feedurl);
-    return true;
+    return {
+      feed: feed,
+      feedUrl: feedurl
+    };
   } catch (e) {
-    return false;
+    return {};
   }
 };
 
-export const updateFeeds = async () => {
-  try {
-    let feeds = await Feed.findAll({});
-    feeds.forEach(async feed => {
-      await parseFeed(feed.url);
-    });
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-const processFeed = async (feed, sourceUrl) => {
-  let is_processed = await checkIfFeedExists(feed.feedUrl);
-  let feedid;
-  if (!is_processed) {
-    try {
-      let created_feed = await Feed.create({
-        title: feed.title,
-        url: feed.feedUrl || sourceUrl,
-        image_url: feed.image.link,
-        description: feed.description
-      });
-      feedid = created_feed.id;
-    } catch (e) {
-      console.log(e);
-    }
+const parseFeedIfNotInDb = async feedurl => {
+  let isFeedInDb = await checkIfFeedExists(feedurl);
+  if (!isFeedInDb) {
+    let data = await parseFeedIfInDb(feedurl);
+    return data;
   } else {
-    feedid = await getFeedIdFromUrl(sourceUrl);
+    return {};
   }
-  processFeedArticles(feed.items,feedid);
-};
-
-const processFeedArticles = async (articles, feedid) => {
-  await articles.forEach(async article => {
-    let article_exists = await checkIfArticleExists(article.link);
-    if (!article_exists) {
-      Article.create({
-        title: article.title,
-        link: article.link,
-        content: article.content,
-        snippet: article.contentSnippet,
-        feedId: feedid
-      });
-    }
-  });
 };
 
 const checkIfFeedExists = async url => {
@@ -73,30 +37,64 @@ const checkIfFeedExists = async url => {
   } catch (e) {
     feeds = [];
   }
-
-  return feeds.length;
+  return feeds.length > 0;
 };
 
-const getFeedIdFromUrl = async url => {
-  let feeds = await Feed.findAll({
-    where: {
-      url: url
+const sanitizeString = datastring => {
+  let pattern = /(<([^>]+)>)/gi;
+  return datastring.replace(pattern, "").trim();
+};
+
+const processFeed = async (feed, sourceUrl) => {
+  try {
+    let created_feed = await Feed.create({
+      title: sanitizeString(feed.title),
+      url: sanitizeString(sourceUrl),
+      image_url: sanitizeString(feed.image.link),
+      description: sanitizeString(feed.description)
+    });
+    let feedid = created_feed.id;
+    return {
+      feedId: feedid,
+      articles: feed.items
+    };
+  } catch (e) {
+    console.log(e);
+    return {};
+  }
+};
+
+const processFeedArticles = async (articles, feedid) => {
+  articles.forEach(async article => {
+    try {
+      await Article.create({
+        title: sanitizeString(article.title),
+        link: sanitizeString(article.link),
+        content: sanitizeString(article.content),
+        snippet: sanitizeString(article.contentSnippet),
+        feedId: feedid
+      });
+    } catch (e) {
+      console.log(e);
     }
   });
-  return feeds[0].id;
 };
 
-const checkIfArticleExists = async link => {
-  let articles = [];
-  try {
-    articles = await Article.findAll({
-      where: {
-        link: link
-      }
-    });
-  } catch (e) {
-    articles = [];
-  }
-
-  return articles.length;
+const getAllFeedUrls = async () => {
+  let feeds = await Feed.findAll({});
+  let urls = [];
+  feeds.forEach(feed => {
+    urls.push(feed.url);
+  });
+  return urls;
 };
+
+module.exports = {
+  parseFeedIfInDb,
+  parseFeedIfNotInDb,
+  checkIfFeedExists,
+  sanitizeString,
+  processFeed,
+  processFeedArticles,
+  getAllFeedUrls
+}

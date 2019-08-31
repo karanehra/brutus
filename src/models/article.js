@@ -1,4 +1,4 @@
-export default (sequelize, types) => {
+module.exports = (sequelize, types) => {
   const article = sequelize.define('article', {
     title: {
       type: types.STRING,
@@ -6,7 +6,8 @@ export default (sequelize, types) => {
     },
     link: {
       type: types.STRING,
-      allowNull: false
+      allowNull: false,
+      unique:true
     },
     content: {
       type: types.TEXT

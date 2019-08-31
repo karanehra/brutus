@@ -1,11 +1,10 @@
-import Sequelize from "sequelize";
-import { databaseEmitter } from "../emitters/index";
-import { INITIALIZE_DATABASE, SYNC_DATABASE } from "../constants/events";
-import mysql2 from "mysql2";
-import Logger from "../util/logger";
-import ArticleModel from "../models/article";
-import FeedModel from "../models/feed";
-import LogModel from "../models/log";
+const Sequelize = require("sequelize");
+const { databaseEmitter } = require("../emitters/index");
+const { INITIALIZE_DATABASE, SYNC_DATABASE } = require("../constants/events");
+const mysql2 = require("mysql2");
+const ArticleModel = require("../models/article");
+const FeedModel = require("../models/feed");
+const LogModel = require("../models/log");
 
 const sequelize = new Sequelize("newdb", "karan", "karan", {
   dialect: "mysql",
@@ -18,16 +17,21 @@ const sequelize = new Sequelize("newdb", "karan", "karan", {
     : undefined
 });
 
-
 databaseEmitter.on(INITIALIZE_DATABASE, () => {
-  sequelize.authenticate()
+  sequelize.authenticate();
 });
 
 databaseEmitter.on(SYNC_DATABASE, () => {
-  sequelize.sync()
+  sequelize.sync();
 });
 
-export const Article = ArticleModel(sequelize, Sequelize);
-export const Feed = FeedModel(sequelize, Sequelize);
-export const Log = LogModel(sequelize, Sequelize);
+const Article = ArticleModel(sequelize, Sequelize);
+const Feed = FeedModel(sequelize, Sequelize);
+const Log = LogModel(sequelize, Sequelize);
 Feed.hasMany(Article);
+
+module.exports = {
+  Article,
+  Feed,
+  Log
+};

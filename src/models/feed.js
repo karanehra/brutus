@@ -1,4 +1,4 @@
-export default (sequelize, types) => {
+module.exports = (sequelize, types) => {
   const feed = sequelize.define("feed", {
     title: {
       type: types.STRING,
@@ -6,7 +6,8 @@ export default (sequelize, types) => {
     },
     url: {
       type: types.STRING,
-      allowNull: false
+      allowNull: false,
+      unique:true
     },
     image_url: {
       type: types.STRING
