@@ -2,7 +2,6 @@ import Sequelize from "sequelize";
 import { databaseEmitter } from "../emitters/index";
 import { INITIALIZE_DATABASE, SYNC_DATABASE } from "../constants/events";
 import mysql2 from "mysql2";
-import Logger from "../util/logger";
 import ArticleModel from "../models/article";
 import FeedModel from "../models/feed";
 import LogModel from "../models/log";

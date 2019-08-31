@@ -4,22 +4,37 @@ import { databaseEmitter } from "./emitters/index";
 import { INITIALIZE_DATABASE, SYNC_DATABASE } from "./constants/events";
 import { Article, Log, Feed } from "./database/index";
 import cors from "cors";
-import "./util/cronjobs";
-
 import bodyParser from "body-parser";
-import { bulkUpdatePipeline, bulkparsePipelineIfNotInDb } from "./util/parsePipelines";
+import {
+  bulkUpdatePipeline,
+  bulkparsePipelineIfNotInDb
+} from "./util/parsePipelines";
 import { checkIfFeedExists } from "./util/parsers";
 import { parseFeedIfInDb } from "./util/parsers";
+import "./util/cronjobs";
+
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
 const port = process.env.PORT || 3000;
 
-global.task_queue = [];
+import cache from "memory-cache";
 
-app.get("/", (req, res) => {
-  res.send("Service Online");
+app.get("/", async (req, res) => {
+  let val = cache.get("appStatus");
+  if (val) {
+    res.send(JSON.parse(val));
+  } else {
+    let articleCount = await Article.count({});
+    let feedCount = await Feed.count({});
+    let payload = {
+      articles: articleCount,
+      feeds: feedCount
+    }
+    cache.put("appStatus", JSON.stringify(payload),5000)
+    res.send(payload)
+  }
 });
 
 app.get("/logs", async (req, res) => {
@@ -40,9 +55,7 @@ app.post("/feed", async (req, res) => {
 });
 
 app.post("/feed-bulk", (req, res) => {
-  // let urls = [...new Set(req.body.url)];
-  // bulkParseFeeds(req.body.url);
-  bulkparsePipelineIfNotInDb(req.body.url)
+  bulkparsePipelineIfNotInDb(req.body.url);
   res.send("Processing");
 });
 
@@ -59,11 +72,13 @@ app.get("/cleardb", (req, res) => {
 
 app.get("/articlecount", async (req, res) => {
   let articles = await Article.findAll({});
-  let unique_articles = [...new Set(articles)]
-  res.send({
-    total:String(articles.length),
-    unique:String(unique_articles.length)
-  }).status(200);
+  let unique_articles = [...new Set(articles)];
+  res
+    .send({
+      total: String(articles.length),
+      unique: String(unique_articles.length)
+    })
+    .status(200);
 });
 
 app.get("/articles", async (req, res) => {
@@ -74,28 +89,23 @@ app.get("/articles", async (req, res) => {
   res.send(articles).status(200);
 });
 
-app.get("/articlenames", async (req,res)=>{
-  let articles = await Article.findAll({
-  });
+app.get("/articlenames", async (req, res) => {
+  let articles = await Article.findAll({});
   let data = [];
   articles.forEach(article => data.push(article.link));
   let unique = [...new Set(data)];
 
-  res.send({
-    total:String(data.length),
-    unique:String(unique.length)
-  }).status(200);
-})
-
-// app.get("/update", async (req, res) => {
-//   updateFeeds();
-//   res.send("feed Update triggered");
-// });
+  res
+    .send({
+      total: String(data.length),
+      unique: String(unique.length)
+    })
+    .status(200);
+});
 
 app.post("/test", async (req, res) => {
   bulkUpdatePipeline();
-  res.send("ok")
- 
+  res.send("ok");
 });
 
 app.listen(port, () => {
