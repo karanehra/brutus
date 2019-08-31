@@ -1,6 +1,5 @@
 import parser from "rss-parser";
-import { Feed } from "../database";
-import { Article } from "../database/index";
+import { Feed, Article } from "../database/index";
 
 let Parser = new parser();
 
@@ -9,9 +8,8 @@ export const parseFeed = async feedurl => {
   try {
     feed = await Parser.parseURL(feedurl);
     processFeed(feed, feedurl);
-    return true;
   } catch (e) {
-    return false;
+    console.log(e);
   }
 };
 
@@ -27,24 +25,18 @@ export const updateFeeds = async () => {
 };
 
 const processFeed = async (feed, sourceUrl) => {
-  let is_processed = await checkIfFeedExists(feed.feedUrl);
-  let feedid;
-  if (!is_processed) {
-    try {
-      let created_feed = await Feed.create({
-        title: feed.title,
-        url: feed.feedUrl || sourceUrl,
-        image_url: feed.image.link,
-        description: feed.description
-      });
-      feedid = created_feed.id;
-    } catch (e) {
-      console.log(e);
-    }
-  } else {
-    feedid = await getFeedIdFromUrl(sourceUrl);
+  try {
+    let created_feed = await Feed.create({
+      title: sanitizeString(feed.title),
+      url: sanitizeString(sourceUrl),
+      image_url: sanitizeString(feed.image.link),
+      description: sanitizeString(feed.description)
+    });
+    let feedid = created_feed.id;
+    processFeedArticles(feed.items, feedid);
+  } catch (e) {
+    console.log(e);
   }
-  processFeedArticles(feed.items,feedid);
 };
 
 const processFeedArticles = async (articles, feedid) => {
@@ -52,17 +44,17 @@ const processFeedArticles = async (articles, feedid) => {
     let article_exists = await checkIfArticleExists(article.link);
     if (!article_exists) {
       Article.create({
-        title: article.title,
-        link: article.link,
-        content: article.content,
-        snippet: article.contentSnippet,
+        title: sanitizeString(article.title),
+        link: sanitizeString(article.link),
+        content: sanitizeString(article.content),
+        snippet: sanitizeString(article.contentSnippet),
         feedId: feedid
       });
     }
   });
 };
 
-const checkIfFeedExists = async url => {
+export const checkIfFeedExists = async url => {
   let feeds = [];
   try {
     feeds = await Feed.findAll({
@@ -73,8 +65,7 @@ const checkIfFeedExists = async url => {
   } catch (e) {
     feeds = [];
   }
-
-  return feeds.length;
+  return feeds.length > 0;
 };
 
 const getFeedIdFromUrl = async url => {
@@ -98,5 +89,25 @@ const checkIfArticleExists = async link => {
     articles = [];
   }
 
-  return articles.length;
+  return articles.length > 0;
+};
+
+export const sanitizeString = datastring => {
+  let pattern = /(<([^>]+)>)/gi;
+  return datastring.replace(pattern, "").trim();
+};
+
+export const bulkParseFeeds = feedArray => {
+  feedArray.forEach(async feedurl => {
+    let feedExists = await checkIfFeedExists(feedurl);
+    if (!feedExists) {
+      let feed;
+      try {
+        feed = await Parser.parseURL(feedurl);
+        await processFeed(feed, feedurl);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  });
 };

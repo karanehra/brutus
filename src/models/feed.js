@@ -1,4 +1,4 @@
-export default (sequelize, types) => {
+module.exports = (sequelize, types) => {
   const feed = sequelize.define("feed", {
     title: {
       type: types.STRING,

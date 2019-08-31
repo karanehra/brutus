@@ -15,7 +15,8 @@ const sequelize = new Sequelize("newdb", "karan", "karan", {
     : "35.202.76.46",
   socketPath: process.env.CLOUD_SQL_CONNECTION_NAME
     ? `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}`
-    : undefined
+    : undefined,
+  logging:false
 });
 
 

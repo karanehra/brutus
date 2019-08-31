@@ -1,4 +1,4 @@
-export default (sequelize, types) => {
+module.exports =  (sequelize, types) => {
   const log = sequelize.define('log', {
     title: {
       type: types.STRING,
