@@ -29,7 +29,7 @@ app.get("/", async (req, res) => {
       articles: articleCount,
       feeds: feedCount
     };
-    cache.put("appStatus", JSON.stringify(payload), 5000);
+    cache.put("appStatus", JSON.stringify(payload), 20000);
     res.send(payload);
   }
 });
