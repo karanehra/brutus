@@ -13,10 +13,10 @@ const { parseFeedIfInDb } = require("./util/parsers");
 const redis = require("redis");
 
 let cache;
-if(process.env.REDIS_HOST){
-  cache = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST)
+if (process.env.REDIS_HOST) {
+  cache = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST);
 } else {
-  cache = redis.createClient()
+  cache = redis.createClient();
 }
 
 const app = express();
@@ -25,19 +25,20 @@ app.use(cors());
 const port = process.env.PORT || 3000;
 
 app.get("/", async (req, res) => {
-  let val = cache.get("appStatus");
-  if (val) {
-    res.send(JSON.parse(val));
-  } else {
-    let articleCount = await Article.count({});
-    let feedCount = await Feed.count({});
-    let payload = {
-      articles: articleCount,
-      feeds: feedCount
-    };
-    cache.set("appStatus", JSON.stringify(payload),'EX', 2);
-    res.send(payload);
-  }
+  cache.get("appStatus", async (err, val) => {
+    if (val) {
+      res.send(JSON.parse(val));
+    } else {
+      let articleCount = await Article.count({});
+      let feedCount = await Feed.count({});
+      let payload = {
+        articles: articleCount,
+        feeds: feedCount
+      };
+      cache.set("appStatus", JSON.stringify(payload), "EX", 2);
+      res.send(payload);
+    }
+  });
 });
 
 app.get("/logs", async (req, res) => {
