@@ -10,7 +10,7 @@ const {
 } = require("./util/parsePipelines");
 const { checkIfFeedExists } = require("./util/parsers");
 const { parseFeedIfInDb } = require("./util/parsers");
-require("./util/cronjobs");
+// require("./util/cronjobs");
 
 const app = express();
 app.use(bodyParser.json());
