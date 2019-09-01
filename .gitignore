@@ -5,3 +5,4 @@ build
 .env
 report*
 package-lock
+ecosystem*

@@ -54,13 +54,22 @@ const processFeed = async (feed, sourceUrl) => {
       description: sanitizeString(feed.description)
     });
     let feedid = created_feed.id;
+    console.log("hello test ", feedid);
     return {
       feedId: feedid,
       articles: feed.items
     };
   } catch (e) {
     console.log(e);
-    return {};
+    let existingFeed = await Feed.findOne({
+      where: {
+        url: sourceUrl
+      }
+    });
+    return {
+      feedId: existingFeed.id,
+      articles: feed.items
+    };
   }
 };
 
@@ -97,4 +106,4 @@ module.exports = {
   processFeed,
   processFeedArticles,
   getAllFeedUrls
-}
+};

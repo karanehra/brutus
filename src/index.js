@@ -10,9 +10,7 @@ const {
 } = require("./util/parsePipelines");
 const { checkIfFeedExists } = require("./util/parsers");
 const { parseFeedIfInDb } = require("./util/parsers");
-require("./util/cronjobs");
-
-console.log(process.env)
+// require("./util/cronjobs");
 
 const app = express();
 app.use(bodyParser.json());
@@ -31,7 +29,7 @@ app.get("/", async (req, res) => {
       articles: articleCount,
       feeds: feedCount
     };
-    cache.put("appStatus", JSON.stringify(payload), 5000);
+    cache.put("appStatus", JSON.stringify(payload), 20000);
     res.send(payload);
   }
 });
