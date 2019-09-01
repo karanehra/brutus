@@ -10,13 +10,19 @@ const {
 } = require("./util/parsePipelines");
 const { checkIfFeedExists } = require("./util/parsers");
 const { parseFeedIfInDb } = require("./util/parsers");
-// require("./util/cronjobs");
+const redis = require("redis");
+
+let cache;
+if(process.env.REDIS_HOST){
+  cache = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST)
+} else {
+  cache = redis.createClient()
+}
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 const port = process.env.PORT || 3000;
-const cache =require("memory-cache");
 
 app.get("/", async (req, res) => {
   let val = cache.get("appStatus");
@@ -29,7 +35,7 @@ app.get("/", async (req, res) => {
       articles: articleCount,
       feeds: feedCount
     };
-    cache.put("appStatus", JSON.stringify(payload), 20000);
+    cache.set("appStatus", JSON.stringify(payload),'EX', 2);
     res.send(payload);
   }
 });
