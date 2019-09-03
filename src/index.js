@@ -10,7 +10,7 @@ const {
 } = require("./util/parsePipelines");
 const { checkIfFeedExists } = require("./util/parsers");
 const { parseFeedIfInDb } = require("./util/parsers");
-const redis = require("redis");
+const redis = require("async-redis");
 
 let cache;
 if (process.env.REDIS_HOST) {
@@ -25,20 +25,19 @@ app.use(cors());
 const port = process.env.PORT || 3000;
 
 app.get("/", async (req, res) => {
-  cache.get("appStatus", async (err, val) => {
-    if (val) {
-      res.send(JSON.parse(val));
-    } else {
-      let articleCount = await Article.count({});
-      let feedCount = await Feed.count({});
-      let payload = {
-        articles: articleCount,
-        feeds: feedCount
-      };
-      cache.set("appStatus", JSON.stringify(payload), "EX", 2);
-      res.send(payload);
-    }
-  });
+  let val = await cache.get("appStatus");
+  if (val) {
+    res.send(JSON.parse(val));
+  } else {
+    let articleCount = await Article.count({});
+    let feedCount = await Feed.count({});
+    let payload = {
+      articles: articleCount,
+      feeds: feedCount
+    };
+    cache.set("appStatus", JSON.stringify(payload), "EX", 60);
+    res.send(payload);
+  }
 });
 
 app.get("/logs", async (req, res) => {
