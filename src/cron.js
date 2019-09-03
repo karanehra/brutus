@@ -3,7 +3,7 @@ const { databaseEmitter } = require("./emitters/index");
 const { INITIALIZE_DATABASE, SYNC_DATABASE } = require("./constants/events");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const { startJobs, stopJobs, areCronsRunning } = require("./util/cronjobs");
+const { startJobs, stopJobs, areCronsRunning,getCronData } = require("./util/cronjobs");
 require("./util/cronjobs");
 
 const app = express();
@@ -13,7 +13,7 @@ const port = 3001;
 
 app.get("/", (req, res) => {
   if (areCronsRunning()) {
-    res.send("cron runner,");
+    res.send(getCronData());
   } else {
     res.send("cron stopped,");
   }
