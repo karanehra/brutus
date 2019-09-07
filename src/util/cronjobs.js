@@ -1,6 +1,9 @@
 const cron = require("node-cron");
 const { dumpFeedUrls, dumpArticles } = require("./dumpers");
 const { bulkUpdatePipeline } = require("./parsePipelines");
+const Logger  = require("../util/logger");
+
+const logger = new Logger();
 
 let cronJobsList = [
   {
@@ -39,7 +42,9 @@ const startJob = id => {
   if (!job.isRunning) {
     job.instance = cron.schedule(job.schedule, job.func);
     job.isRunning = true;
+    logger.success("Cron "+ job.name + " started.")
   }
+  logger.error("Cron "+ job.name + " is already running.")
 };
 
 const stopJob = id => {
@@ -47,7 +52,9 @@ const stopJob = id => {
   if (job.isRunning) {
     job.instance.destroy();
     job.isRunning = false;
+    logger.success("Cron "+ job.name + " stopped.")
   }
+  logger.error("Cron "+ job.name + " is already stopped.")
 };
 
 
