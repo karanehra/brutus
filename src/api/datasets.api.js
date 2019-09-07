@@ -44,3 +44,5 @@ router.get("/", async (req, res) => {
     res.send(payload);
   }
 });
+
+module.exports = router;

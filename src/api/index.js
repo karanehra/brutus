@@ -5,7 +5,9 @@ const datasetsApiSet = require("./datasets.api");
 const articlesApiSet = require("./articles.api");
 
 
-
+router.use((req, res, next) => {
+  next()
+})
 router.use("/feeds", feedApiSet);
 router.use("/logs", logsApiSet);
 router.use("/articles", articlesApiSet);
