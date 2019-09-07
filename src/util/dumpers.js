@@ -28,17 +28,14 @@ const dumpFeedUrls = async () => {
 const dumpArticles = async () => {
   try {
     let articles = await Article.findAll({});
-    fs.writeFile(
-      "dumps/articles-" + Date.now().toString() + ".txt",
-      JSON.stringify(articles),
-      err => {
-        if (!err) {
-          console.log("file written");
-        } else {
-          console.log(err);
-        }
+    let filename = "dumps/articles-" + Date.now().toString() + ".txt";
+    fs.writeFile(filename, JSON.stringify(articles), err => {
+      if (!err) {
+        console.log("file written");
+      } else {
+        console.log(err);
       }
-    );
+    });
   } catch (e) {
     console.log(e);
   }

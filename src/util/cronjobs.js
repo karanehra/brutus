@@ -2,15 +2,14 @@ const cron = require("node-cron");
 const { dumpFeedUrls, dumpArticles } = require("./dumpers");
 const { bulkUpdatePipeline } = require("./parsePipelines");
 
-let isRunning = false;
-
 let cronJobsList = [
   {
     name: "Updater Cron",
     schedule: "0 */10 * * * *",
     func: () => bulkUpdatePipeline(),
-    instance:null,
-    id:1
+    instance: null,
+    isRunning: false,
+    id: 1
   },
   {
     name: "Dumper Cron",
@@ -19,56 +18,53 @@ let cronJobsList = [
       dumpFeedUrls();
       dumpArticles();
     },
-    instance:null,
-    id:2
+    instance: null,
+    isRunning: false,
+    id: 2
   },
   {
     name: "Test",
     schedule: "* * * * * *",
     func: () => {
-      console.log("test")
+      console.log("test");
     },
-    instance:null,
-    id:3
-  },
+    instance: null,
+    isRunning: false,
+    id: 3
+  }
 ];
 
-const startJobs = () => {
-  if (!isRunning) {
-    cronJobsList.forEach(job => {
-      job.instance = cron.schedule(job.schedule,job.func);
-    })
-    isRunning = true;
+const startJob = id => {
+  let job = cronJobsList.filter(job => job.id == id)[0];
+  if (!job.isRunning) {
+    job.instance = cron.schedule(job.schedule, job.func);
+    job.isRunning = true;
   }
 };
 
-const stopJobs = () => {
-  if (isRunning) {
-    cronJobsList.forEach(job => {
-      job.instance.destroy();
-    })
-    isRunning = false;
+const stopJob = id => {
+  let job = cronJobsList.filter(job => job.id == id)[0];
+  if (job.isRunning) {
+    job.instance.destroy();
+    job.isRunning = false;
   }
 };
 
-const areCronsRunning = () => {
-  return isRunning;
-};
+
 
 const getCronData = () => {
   let data = [];
-  cronJobsList.forEach(job=>{
-    let temp = Object.assign({},job);
+  cronJobsList.forEach(job => {
+    let temp = Object.assign({}, job);
     delete temp.func;
-    delete temp.instance
-    data.push(temp)
-  })
+    delete temp.instance;
+    data.push(temp);
+  });
   return data;
-}
+};
 
 module.exports = {
-  startJobs,
-  stopJobs,
-  areCronsRunning,
-  getCronData
+  getCronData,
+  startJob,
+  stopJob
 };
