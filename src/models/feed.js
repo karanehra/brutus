@@ -13,7 +13,7 @@ module.exports = (sequelize, types) => {
       type: types.STRING
     },
     description: {
-      type: types.STRING
+      type: types.TEXT
     }
   });
   return feed;
