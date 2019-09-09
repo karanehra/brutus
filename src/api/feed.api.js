@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const { bulkparsePipelineIfNotInDb } = require("../util/parsePipelines");
 const { Feed } = require("../database/index");
 const { getFreshUrls, additionPipeline } = require("../util/pipeline");
 
@@ -22,9 +21,5 @@ router.get("/", async (req, res) => {
   res.send(feeds).status(200);
 });
 
-router.post("/bulk", (req, res) => {
-  bulkparsePipelineIfNotInDb(req.body.url);
-  res.send("Processing");
-});
 
 module.exports = router;

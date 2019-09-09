@@ -4,6 +4,6 @@ node_modules
 build
 .env
 report*
-package-lock
+package-lock.json
 ecosystem*
 dumps

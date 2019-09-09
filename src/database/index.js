@@ -28,7 +28,8 @@ databaseEmitter.on(SYNC_DATABASE, () => {
 const Article = ArticleModel(sequelize, Sequelize);
 const Feed = FeedModel(sequelize, Sequelize);
 const Log = LogModel(sequelize, Sequelize);
-Feed.hasMany(Article);
+// Feed.hasMany(Article);
+Article.belongsTo(Feed)
 
 module.exports = {
   Article,
