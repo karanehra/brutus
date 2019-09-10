@@ -1,9 +1,10 @@
 const router = require("express").Router();
 const { Article, Feed } = require("../database/index");
 const cache = require("../redis");
+const { ARTICLE_DATAPOINTS } = require("../constants/cacheKeys");
 
 router.get("/dataset", async (req, res) => {
-  let val = await cache.get("article_datapoints");
+  let val = await cache.get(ARTICLE_DATAPOINTS);
   if (val) {
     res.send(JSON.parse(val));
   } else {
@@ -19,8 +20,18 @@ router.get("/dataset", async (req, res) => {
         dataset[createdDate] = 1;
       }
     });
-    cache.set("article_datapoints", JSON.stringify(dataset), "EX", 86400);
-    res.send(dataset);
+    let dataset2 = {};
+    let cumulative = 0;
+    Object.keys(dataset).forEach(key => {
+      cumulative = cumulative + dataset[key];
+      dataset2[key] = cumulative;
+    });
+    let finalSet = {
+      addedDaily: dataset,
+      dailyCount: dataset2
+    }
+    cache.set(ARTICLE_DATAPOINTS, JSON.stringify(finalSet), "EX", 86400);
+    res.send(finalSet);
   }
 });
 
