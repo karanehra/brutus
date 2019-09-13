@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { Article, Feed } = require("../database/index");
 const axios = require("axios");
 const cheerio = require("cheerio");
-
+const { toiScraper } = require("../util/scrapers");
 const cache = require("../redis");
 
 router.get("/", async (req, res) => {
@@ -17,30 +17,32 @@ router.get("/", async (req, res) => {
 router.post("/parse", async (req, res) => {
   let url = req.body.url;
   let pattern = /timesofindia.indiatimes.com/;
+  let pattern2 = /www.techrepublic.com/;
   if (String(url).match(pattern)) {
-    let newpat = /[\d\w]*(\.cms)/g;
-    let id = String(url).match(newpat);
-    let val = await cache.get("/timesofindia.indiatimes.com/" + id);
+    toiScraper(url, res);
+  } else if (String(url).match(pattern2)) {
+    let val = await cache.get(url);
     if (val) {
       res.send(val);
     } else {
-      let newurl = "http://timesofindia.indiatimes.com/articleshowprint/" + id;
       axios
-        .get(newurl)
+        .get(url)
         .then(resp => {
           let mkp = cheerio.load(resp.data);
-          cache.set(
-            "/timesofindia.indiatimes.com/" + id,
-            mkp(".Normal").text()
-          );
-          res.send(mkp(".Normal").text());
+          let string = "";
+          // console.log()
+          Array.from(mkp("p")).forEach(p => {
+            string = string + p.innerText;
+          });
+          cache.set(url, string);
+          res.send(string);
         })
         .catch(err => {
           console.log(err);
         });
     }
   } else {
-    res.send("No match Found")
+    res.send("No match Found");
   }
 });
 
