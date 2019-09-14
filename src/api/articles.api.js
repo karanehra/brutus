@@ -1,9 +1,6 @@
 const router = require("express").Router();
 const { Article, Feed } = require("../database/index");
-const axios = require("axios");
-const cheerio = require("cheerio");
-const { toiScraper } = require("../util/scrapers");
-const cache = require("../redis");
+const { toiScraper, techRepublicScraper } = require("../util/scrapers");
 
 router.get("/", async (req, res) => {
   let articles = await Article.findAll({
@@ -21,26 +18,7 @@ router.post("/parse", async (req, res) => {
   if (String(url).match(pattern)) {
     toiScraper(url, res);
   } else if (String(url).match(pattern2)) {
-    let val = await cache.get(url);
-    if (val) {
-      res.send(val);
-    } else {
-      axios
-        .get(url)
-        .then(resp => {
-          let mkp = cheerio.load(resp.data);
-          let string = "";
-          // console.log()
-          Array.from(mkp("p")).forEach(p => {
-            string = string + p.innerText;
-          });
-          cache.set(url, string);
-          res.send(string);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
+    techRepublicScraper(url, res);
   } else {
     res.send("No match Found");
   }

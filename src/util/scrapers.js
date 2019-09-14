@@ -23,4 +23,22 @@ const toiScraper = async (url, res) => {
   }
 };
 
-module.exports = { toiScraper };
+const techRepublicScraper = async (url, res) => {
+  let val = await cache.get(url);
+  if (val) {
+    res.send(val);
+  } else {
+    axios
+      .get(url)
+      .then(resp => {
+        let mkp = cheerio.load(resp.data);
+
+        res.send(cheerio.text(mkp("p")));
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+};
+
+module.exports = { toiScraper, techRepublicScraper };
