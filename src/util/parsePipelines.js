@@ -5,7 +5,7 @@ const {
   processFeed,
   parseFeedIfNotInDb
 } = require("./parsers");
-const cache = require("../redis");
+// const cache = require("../redis");
 const { LAST_BULK_UPDATE } = require("../constants/cacheKeys");
 
 const parsePipelineIfNotInDb = async feedurl => {
@@ -35,7 +35,7 @@ const bulkparsePipelineIfNotInDb = async feedArray => {
 };
 
 const bulkUpdatePipeline = async () => {
-  cache.set(LAST_BULK_UPDATE, Date.now());
+  // cache.set(LAST_BULK_UPDATE, Date.now());
   let feedurls = await getAllFeedUrls();
   for (let url of feedurls) {
     await parsePipelineIfInDb(url);
