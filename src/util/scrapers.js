@@ -41,4 +41,24 @@ const techRepublicScraper = async (url, res) => {
   }
 };
 
-module.exports = { toiScraper, techRepublicScraper };
+const indiaTimesScraper = async (url, res) => {
+  let val = await cache.get(url);
+  if (val) {
+    res.send(val);
+  } else {
+    axios
+      .get(url)
+      .then(resp => {
+        let mkp = cheerio.load(resp.data);
+        mkp("p").each((i, e) => {
+          console.log(e.attribs);
+        });
+        res.send(cheerio.text(mkp(".description>p")));
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+};
+
+module.exports = { toiScraper, techRepublicScraper, indiaTimesScraper };

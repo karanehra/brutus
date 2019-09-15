@@ -1,6 +1,10 @@
 const router = require("express").Router();
 const { Article, Feed } = require("../database/index");
-const { toiScraper, techRepublicScraper } = require("../util/scrapers");
+const {
+  toiScraper,
+  techRepublicScraper,
+  indiaTimesScraper
+} = require("../util/scrapers");
 
 router.get("/", async (req, res) => {
   let articles = await Article.findAll({
@@ -15,10 +19,14 @@ router.post("/parse", async (req, res) => {
   let url = req.body.url;
   let pattern = /timesofindia.indiatimes.com/;
   let pattern2 = /www.techrepublic.com/;
+  let pattern3 = /www.indiatoday.in/;
+
   if (String(url).match(pattern)) {
     toiScraper(url, res);
   } else if (String(url).match(pattern2)) {
     techRepublicScraper(url, res);
+  } else if (String(url).match(pattern3)) {
+    indiaTimesScraper(url, res);
   } else {
     res.send("No match Found");
   }
