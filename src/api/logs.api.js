@@ -10,4 +10,13 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/clear", async (req, res) => {
+  try {
+    await Log.destroy({ where: {} });
+    res.send("Logs Cleared !").status(200);
+  } catch (e) {
+    res.send("Error Occured").status(500);
+  }
+});
+
 module.exports = router;
