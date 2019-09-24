@@ -1,8 +1,10 @@
-import { Router as router } from "express";
+import express from "express";
 import { Article, Feed } from "../database/index ";
 import cache from "../redis ";
 import { ARTICLE_DATAPOINTS } from "../constants/cacheKeys ";
 import { getPerDayArticleData } from "../util/datasets ";
+
+let router = express.Router();
 
 router.get("/dataset", async (req, res) => {
   let val = await cache.get(ARTICLE_DATAPOINTS);

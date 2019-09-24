@@ -1,9 +1,11 @@
-import { Router as router } from "express";
+import express from "express";
 import feedApiSet from "./feed.api ";
 import logsApiSet from "./logs.api ";
 import datasetsApiSet from "./datasets.api ";
 import articlesApiSet from "./articles.api ";
 import dumpsApiSet from "./dumps.api ";
+
+let router = express.Router();
 
 router.use("/feeds", feedApiSet);
 router.use("/logs", logsApiSet);

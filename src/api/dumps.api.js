@@ -1,7 +1,9 @@
-import { Router as router } from "express";
+import express from "express";
 import fs from "fs";
 import path from "path";
 import { Feed, Article } from "../database/index";
+
+let router = express.Router();
 
 router.get("/feeds", async (req, res) => {
   let feeds = await Feed.findAll({});
@@ -31,4 +33,4 @@ router.get("/articles", async (req, res) => {
   });
 });
 
- export default router;
+export default router;
