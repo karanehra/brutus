@@ -1,14 +1,14 @@
-const {
+import {
   getAllFeedUrls,
   parseFeedIfInDb,
   processFeedArticles,
   processFeed,
   parseFeedIfNotInDb
-} = require("./parsers");
-// const cache = require("../redis");
-const { LAST_BULK_UPDATE } = require("../constants/cacheKeys");
+}  from"./parsers "
+// import cache  "../redis "
+// import { LAST_BULK_UPDATE } from "../constants/cacheKeys "
 
-const parsePipelineIfNotInDb = async feedurl => {
+export const parsePipelineIfNotInDb = async feedurl => {
   let part1 = await parseFeedIfNotInDb(feedurl);
   if (part1.feed) {
     let part2 = await processFeed(part1.feed, part1.feedUrl);
@@ -18,7 +18,7 @@ const parsePipelineIfNotInDb = async feedurl => {
   }
 };
 
-const parsePipelineIfInDb = async feedurl => {
+export const parsePipelineIfInDb = async feedurl => {
   let part1 = await parseFeedIfInDb(feedurl);
   if (part1.feed) {
     let part2 = await processFeed(part1.feed, part1.feedUrl);
@@ -28,23 +28,16 @@ const parsePipelineIfInDb = async feedurl => {
   }
 };
 
-const bulkparsePipelineIfNotInDb = async feedArray => {
+export const bulkparsePipelineIfNotInDb = async feedArray => {
   for (let url of feedArray) {
     await parsePipelineIfNotInDb(url);
   }
 };
 
-const bulkUpdatePipeline = async () => {
+export const bulkUpdatePipeline = async () => {
   // cache.set(LAST_BULK_UPDATE, Date.now());
   let feedurls = await getAllFeedUrls();
   for (let url of feedurls) {
     await parsePipelineIfInDb(url);
   }
-};
-
-module.exports = {
-  parsePipelineIfNotInDb,
-  parsePipelineIfInDb,
-  bulkparsePipelineIfNotInDb,
-  bulkUpdatePipeline
 };

@@ -1,8 +1,8 @@
-const cache = require("../redis");
-const axios = require("axios");
-const cheerio = require("cheerio");
+import cache from "../redis";
+import axios from "axios";
+import cheerio from "cheerio";
 
-const toiScraper = async (url, res) => {
+export const toiScraper = async (url, res) => {
   let newpat = /[\d\w]*(\.cms)/g;
   let id = String(url).match(newpat);
   let val = await cache.get("/timesofindia.indiatimes.com/" + id);
@@ -23,7 +23,7 @@ const toiScraper = async (url, res) => {
   }
 };
 
-const techRepublicScraper = async (url, res) => {
+export const techRepublicScraper = async (url, res) => {
   let val = await cache.get(url);
   if (val) {
     res.send(val);
@@ -41,7 +41,7 @@ const techRepublicScraper = async (url, res) => {
   }
 };
 
-const indiaTimesScraper = async (url, res) => {
+export const indiaTimesScraper = async (url, res) => {
   let val = await cache.get(url);
   if (val) {
     res.send(val);
@@ -60,5 +60,3 @@ const indiaTimesScraper = async (url, res) => {
       });
   }
 };
-
-module.exports = { toiScraper, techRepublicScraper, indiaTimesScraper };

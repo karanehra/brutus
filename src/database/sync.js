@@ -1,10 +1,10 @@
-const Sequelize = require("sequelize");
-const mysql2 = require("mysql2");
-const ArticleModel = require("../models/article");
-const FeedModel = require("../models/feed");
-const LogModel = require("../models/log");
+import Sequelize  "sequelize "
+import mysql2  "mysql2 "
+import ArticleModel  "../models/article "
+import FeedModel  "../models/feed "
+import LogModel  "../models/log "
 
-const sequelize = new Sequelize(
+import sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
   process.env.DB_PASSWORD,
@@ -15,9 +15,9 @@ const sequelize = new Sequelize(
   }
 );
 
-const Article = ArticleModel(sequelize, Sequelize);
-const Feed = FeedModel(sequelize, Sequelize);
-const Log = LogModel(sequelize, Sequelize);
+import Article = ArticleModel(sequelize, Sequelize);
+import Feed = FeedModel(sequelize, Sequelize);
+import Log = LogModel(sequelize, Sequelize);
 Feed.hasMany(Article);
 sequelize.authenticate();
 sequelize.sync();

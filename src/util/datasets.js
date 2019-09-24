@@ -1,6 +1,6 @@
-const { Article } = require("../database/index");
+import { Article } from "../database/index "
 
-const getPerDayArticleData = async () => {
+export const getPerDayArticleData = async () => {
   let articles = await Article.findAll({});
   let dataset = {};
   articles.forEach(article => {
@@ -15,6 +15,6 @@ const getPerDayArticleData = async () => {
   return dataset
 };
 
-module.exports = {
+ export default{
   getPerDayArticleData
 }

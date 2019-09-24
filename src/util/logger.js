@@ -1,5 +1,5 @@
-const { Log } = require("../database/index");
-module.exports = class Logger {
+import { Log } from "../database/index ";
+export class Logger {
   success(title, description) {
     Log.create({
       title: title,
@@ -31,4 +31,4 @@ module.exports = class Logger {
       error_type: "FATAL"
     });
   }
-};
+}

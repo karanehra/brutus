@@ -1,19 +1,19 @@
-module.exports =  (sequelize, types) => {
-  const log = sequelize.define('log', {
+export default (sequelize, types) => {
+  const log = sequelize.define("log", {
     title: {
       type: types.STRING,
-      allowNull: false,
+      allowNull: false
     },
     description: {
-      type: types.TEXT,
+      type: types.TEXT
     },
-    log_type:{
-      type:types.ENUM,
-      values: ['SUCCESS', 'ERROR', 'INFO','FATAL']
+    log_type: {
+      type: types.ENUM,
+      values: ["SUCCESS", "ERROR", "INFO", "FATAL"]
     },
-    tag:{
-      type:types.STRING
+    tag: {
+      type: types.STRING
     }
-  })
+  });
   return log;
-}
+};

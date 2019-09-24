@@ -1,8 +1,4 @@
-const { EventEmitter } = require("events");
-const databaseEmitter = new EventEmitter();
-const feedEmitter = new EventEmitter();
+import { EventEmitter } from "events";
 
-module.exports = {
-  databaseEmitter,
-  feedEmitter
-};
+export const databaseEmitter = new EventEmitter();
+export const feedEmitter = new EventEmitter();

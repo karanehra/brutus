@@ -1,9 +1,9 @@
-const parser = require("rss-parser");
-const { Feed, Article } = require("../database/index");
+import parser from "rss-parser ";
+import { Feed, Article } from "../database/index ";
 
 let Parser = new parser();
 
-const parseFeedIfInDb = async feedurl => {
+export const parseFeedIfInDb = async feedurl => {
   let feed;
   try {
     feed = await Parser.parseURL(feedurl);
@@ -16,7 +16,7 @@ const parseFeedIfInDb = async feedurl => {
   }
 };
 
-const parseFeedIfNotInDb = async feedurl => {
+export const parseFeedIfNotInDb = async feedurl => {
   let isFeedInDb = await checkIfFeedExists(feedurl);
   if (!isFeedInDb) {
     let data = await parseFeedIfInDb(feedurl);
@@ -26,7 +26,7 @@ const parseFeedIfNotInDb = async feedurl => {
   }
 };
 
-const checkIfFeedExists = async url => {
+export const checkIfFeedExists = async url => {
   let feeds = [];
   try {
     feeds = await Feed.findAll({
@@ -40,12 +40,12 @@ const checkIfFeedExists = async url => {
   return feeds.length > 0;
 };
 
-const sanitizeString = datastring => {
+export const sanitizeString = datastring => {
   let pattern = /(<([^>]+)>)/gi;
   return datastring.replace(pattern, "").trim();
 };
 
-const processFeed = async (feed, sourceUrl) => {
+export const processFeed = async (feed, sourceUrl) => {
   try {
     let created_feed = await Feed.create({
       title: sanitizeString(feed.title),
@@ -73,7 +73,7 @@ const processFeed = async (feed, sourceUrl) => {
   }
 };
 
-const processFeedArticles = async (articles, feedid) => {
+export const processFeedArticles = async (articles, feedid) => {
   articles.forEach(async article => {
     try {
       await Article.create({
@@ -89,21 +89,11 @@ const processFeedArticles = async (articles, feedid) => {
   });
 };
 
-const getAllFeedUrls = async () => {
+export const getAllFeedUrls = async () => {
   let feeds = await Feed.findAll({});
   let urls = [];
   feeds.forEach(feed => {
     urls.push(feed.url);
   });
   return urls;
-};
-
-module.exports = {
-  parseFeedIfInDb,
-  parseFeedIfNotInDb,
-  checkIfFeedExists,
-  sanitizeString,
-  processFeed,
-  processFeedArticles,
-  getAllFeedUrls
 };

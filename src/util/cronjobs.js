@@ -1,7 +1,7 @@
-const cron = require("node-cron");
-const { dumpFeedUrls, dumpArticles } = require("./dumpers");
-const { bulkUpdatePipeline } = require("./parsePipelines");
-const Logger = require("../util/logger");
+import cron from "node-cron "
+import { dumpFeedUrls, dumpArticles } from "./dumpers "
+import { bulkUpdatePipeline }from  "./parsePipelines "
+import Logger from "../util/logger "
 
 const logger = new Logger();
 
@@ -29,7 +29,7 @@ let cronJobsList = [
     name: "Test",
     schedule: "* * * * * *",
     func: () => {
-      console.log("test");
+      console.log("test ")
     },
     instance: null,
     isRunning: false,
@@ -37,29 +37,29 @@ let cronJobsList = [
   }
 ];
 
-const startJob = id => {
+export const startJob = id => {
   let job = cronJobsList.filter(job => job.id == id)[0];
   if (!job.isRunning) {
     job.instance = cron.schedule(job.schedule, job.func);
     job.isRunning = true;
-    logger.success("Cron " + job.name + " started.");
+    logger.success("Cron " + job.name + " started. ")
   } else {
-    logger.error("Cron " + job.name + " is already running.");
+    logger.error("Cron " + job.name + " is already running. ")
   }
 };
 
-const stopJob = id => {
+export const stopJob = id => {
   let job = cronJobsList.filter(job => job.id == id)[0];
   if (job.isRunning) {
     job.instance.destroy();
     job.isRunning = false;
-    logger.success("Cron " + job.name + " stopped.");
+    logger.success("Cron " + job.name + " stopped. ")
   } else {
-    logger.error("Cron " + job.name + " is already stopped.");
+    logger.error("Cron " + job.name + " is already stopped. ")
   }
 };
 
-const getCronData = () => {
+export const getCronData = () => {
   let data = [];
   cronJobsList.forEach(job => {
     let temp = Object.assign({}, job);
@@ -68,10 +68,4 @@ const getCronData = () => {
     data.push(temp);
   });
   return data;
-};
-
-module.exports = {
-  getCronData,
-  startJob,
-  stopJob
 };

@@ -1,4 +1,4 @@
-const redis = require("async-redis");
+import redis from "async-redis";
 let cache;
 if (process.env.REDIS_HOST) {
   cache = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST);
@@ -6,5 +6,4 @@ if (process.env.REDIS_HOST) {
   cache = redis.createClient();
 }
 
-
-module.exports = cache;
+export default cache;

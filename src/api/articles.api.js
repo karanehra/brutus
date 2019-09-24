@@ -1,10 +1,10 @@
-const router = require("express").Router();
-const { Article, Feed } = require("../database/index");
-const {
+import { Router as router } from "express";
+import { Article, Feed } from "../database/index ";
+import {
   toiScraper,
   techRepublicScraper,
   indiaTimesScraper
-} = require("../util/scrapers");
+} from "../util/scrapers ";
 
 router.get("/", async (req, res) => {
   let articles = await Article.findAll({
@@ -28,8 +28,8 @@ router.post("/parse", async (req, res) => {
   } else if (String(url).match(pattern3)) {
     indiaTimesScraper(url, res);
   } else {
-    res.send("No match Found");
+    res.send("No match Found ");
   }
 });
 
-module.exports = router;
+export default router;

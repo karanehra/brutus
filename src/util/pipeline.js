@@ -1,12 +1,12 @@
-const { Feed } = require("../database/index");
-const parser = require("rss-parser");
+import { Feed } from "../database/index";
+import parser from "rss-parser";
 let Parser = new parser();
 
 /**
  *
  * @param {Array} urlArray
  */
-const getFreshUrls = async urlArray => {
+export const getFreshUrls = async urlArray => {
   let newUrls = [];
   for (let url of urlArray) {
     let count = await Feed.count({
@@ -24,7 +24,7 @@ const getFreshUrls = async urlArray => {
  *
  * @param {Array} urlArray
  */
-const parseUrls = async urlArray => {
+export const parseUrls = async urlArray => {
   let parsedData = [];
   for (let url of urlArray) {
     try {
@@ -44,7 +44,7 @@ const parseUrls = async urlArray => {
  *
  * @param {Array} feedDataArray
  */
-const createBulkAdditionPayload = feedDataArray => {
+export const createBulkAdditionPayload = feedDataArray => {
   let payload = [];
   for (let data of feedDataArray) {
     let feed = data.feed;
@@ -59,7 +59,7 @@ const createBulkAdditionPayload = feedDataArray => {
   return payload;
 };
 
-const addFeedsToDatabase = async payload => {
+export const addFeedsToDatabase = async payload => {
   try {
     let x = await Feed.bulkCreate(payload);
     console.log(x);
@@ -68,16 +68,14 @@ const addFeedsToDatabase = async payload => {
   }
 };
 
-const sanitizeString = datastring => {
+export const sanitizeString = datastring => {
   let pattern = /(<([^>]+)>)/gi;
   return datastring.replace(pattern, "").trim();
 };
 
-const additionPipeline = async data => {
+export const additionPipeline = async data => {
   let freshUrls = await getFreshUrls(data);
   let parsedData = await parseUrls(freshUrls);
   let pl = await createBulkAdditionPayload(parsedData);
   await addFeedsToDatabase(pl);
 };
-
-module.exports = { additionPipeline, getFreshUrls };

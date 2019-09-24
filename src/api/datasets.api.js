@@ -1,8 +1,8 @@
-const router = require("express").Router();
-const { Article, Feed } = require("../database/index");
-const cache = require("../redis");
-const { ARTICLE_DATAPOINTS } = require("../constants/cacheKeys");
-const { getPerDayArticleData } = require("../util/datasets");
+import { Router as router } from "express";
+import { Article, Feed } from "../database/index ";
+import cache from "../redis ";
+import { ARTICLE_DATAPOINTS } from "../constants/cacheKeys ";
+import { getPerDayArticleData } from "../util/datasets ";
 
 router.get("/dataset", async (req, res) => {
   let val = await cache.get(ARTICLE_DATAPOINTS);
@@ -26,7 +26,7 @@ router.get("/dataset", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  let val = await cache.get("appStatus");
+  let val = await cache.get("appStatus ");
   if (val) {
     res.send(JSON.parse(val));
   } else {
@@ -41,4 +41,4 @@ router.get("/", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

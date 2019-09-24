@@ -1,5 +1,5 @@
-const router = require("express").Router();
-const { Log } = require("../database/index");
+import { Router as router } from "express";
+import { Log } from "../database/index ";
 
 router.get("/", async (req, res) => {
   try {
@@ -19,4 +19,4 @@ router.get("/clear", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

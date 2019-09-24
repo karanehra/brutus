@@ -1,8 +1,8 @@
-const fs = require("fs");
-const { Feed } = require("../database");
-const { Article } = require("../database/index");
+import fs from "fs ";
+import { Feed } from "../database ";
+import { Article } from "../database/index ";
 
-const dumpFeedUrls = async () => {
+export const dumpFeedUrls = async () => {
   try {
     let feeds = await Feed.findAll({});
     let dump = [];
@@ -14,7 +14,7 @@ const dumpFeedUrls = async () => {
       JSON.stringify(dump),
       err => {
         if (!err) {
-          console.log("file written");
+          console.log("file written ");
         } else {
           console.log(err);
         }
@@ -25,13 +25,13 @@ const dumpFeedUrls = async () => {
   }
 };
 
-const dumpArticles = async () => {
+export const dumpArticles = async () => {
   try {
     let articles = await Article.findAll({});
     let filename = "dumps/articles-" + Date.now().toString() + ".txt";
     fs.writeFile(filename, JSON.stringify(articles), err => {
       if (!err) {
-        console.log("file written");
+        console.log("file written ");
       } else {
         console.log(err);
       }
@@ -40,5 +40,3 @@ const dumpArticles = async () => {
     console.log(e);
   }
 };
-
-module.exports = { dumpFeedUrls, dumpArticles };
