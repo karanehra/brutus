@@ -24,6 +24,7 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+  let hasher = crypto.createHash("sha256");
   try {
     let user = await User.findOne({
       where: {
@@ -35,11 +36,12 @@ router.post("/login", async (req, res) => {
       let token = jwt.sign({ email: user.email }, config.JWT_SECRET, {
         expiresIn: "24h"
       });
-      res.send({token}).status(200);
+      res.send({ token }).status(200);
     } else {
       res.sendStatus(401);
     }
   } catch (e) {
+    console.log(e);
     res.send(e).status(500);
   }
 });
