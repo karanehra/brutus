@@ -5,6 +5,7 @@ import mysql2 from "mysql2";
 import ArticleModel from "../models/article";
 import FeedModel from "../models/feed";
 import LogModel from "../models/log";
+import UserModel from "../models/user";
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -28,5 +29,6 @@ databaseEmitter.on(SYNC_DATABASE, () => {
 export const Article = ArticleModel(sequelize, Sequelize);
 export const Feed = FeedModel(sequelize, Sequelize);
 export const Log = LogModel(sequelize, Sequelize);
+export const User = UserModel(sequelize, Sequelize);
 // Feed.hasMany(Article);
 Article.belongsTo(Feed);

@@ -1,7 +1,10 @@
 import express from "express";
 import { Feed } from "../database/index";
 import { getFreshUrls, additionPipeline } from "../util/pipeline";
-let router = express.Router()
+import authenticationMiddleware from "../configs/authMiddleware";
+
+let router = express.Router();
+router.use(authenticationMiddleware);
 
 router.post("/", async (req, res) => {
   let totalUrls = req.body.url.length;

@@ -5,7 +5,10 @@ import {
   techRepublicScraper,
   indiaTimesScraper
 } from "../util/scrapers";
+import authenticationMiddleware from "../configs/authMiddleware";
+
 let router = express.Router();
+router.use(authenticationMiddleware);
 
 router.get("/", async (req, res) => {
   let articles = await Article.findAll({

@@ -1,6 +1,9 @@
 import express from "express";
 import { Log } from "../database/index";
+import authenticationMiddleware from "../configs/authMiddleware";
+
 let router = express.Router();
+router.use(authenticationMiddleware);
 
 router.get("/", async (req, res) => {
   try {

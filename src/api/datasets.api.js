@@ -3,8 +3,10 @@ import { Article, Feed } from "../database/index";
 import cache from "../redis";
 import { ARTICLE_DATAPOINTS } from "../constants/cacheKeys";
 import { getPerDayArticleData } from "../util/datasets";
+import authenticationMiddleware from "../configs/authMiddleware";
 
 let router = express.Router();
+router.use(authenticationMiddleware);
 
 router.get("/dataset", async (req, res) => {
   let val = await cache.get(ARTICLE_DATAPOINTS);

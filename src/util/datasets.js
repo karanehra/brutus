@@ -15,6 +15,4 @@ export const getPerDayArticleData = async () => {
   return dataset;
 };
 
-export default {
-  getPerDayArticleData
-};
+export default getPerDayArticleData;

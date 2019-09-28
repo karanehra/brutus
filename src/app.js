@@ -15,5 +15,4 @@ app.use("/", apis);
 app.listen(port, () => {
   databaseEmitter.emit(INITIALIZE_DATABASE);
   databaseEmitter.emit(SYNC_DATABASE);
-  console.log("db up")
 });

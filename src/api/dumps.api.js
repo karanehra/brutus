@@ -2,8 +2,10 @@ import express from "express";
 import fs from "fs";
 import path from "path";
 import { Feed, Article } from "../database/index";
+import authenticationMiddleware from "../configs/authMiddleware";
 
 let router = express.Router();
+router.use(authenticationMiddleware);
 
 router.get("/feeds", async (req, res) => {
   let feeds = await Feed.findAll({});

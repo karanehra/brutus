@@ -4,6 +4,7 @@ import logsApiSet from "./logs.api";
 import datasetsApiSet from "./datasets.api";
 import articlesApiSet from "./articles.api";
 import dumpsApiSet from "./dumps.api";
+import usersApiSet from "./user.api";
 
 let router = express.Router();
 
@@ -12,5 +13,6 @@ router.use("/logs", logsApiSet);
 router.use("/articles", articlesApiSet);
 router.use("/datasets", datasetsApiSet);
 router.use("/dumps", dumpsApiSet);
+router.use("/users", usersApiSet);
 
 export default router;
