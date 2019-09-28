@@ -1,10 +1,10 @@
-import express from "express ";
-import { databaseEmitter } from "./emitters/index ";
-import { INITIALIZE_DATABASE, SYNC_DATABASE } from "./constants/events ";
-import cors from "cors ";
-import bodyParser from "body-parser ";
-import { startJob, stopJob, getCronData } from "./util/cronjobs ";
-import "./util/cronjobs ";
+import express from "express";
+import { databaseEmitter } from "./emitters/index";
+import { INITIALIZE_DATABASE, SYNC_DATABASE } from "./constants/events";
+import cors from "cors";
+import bodyParser from "body-parser";
+import { startJob, stopJob, getCronData } from "./util/cronjobs";
+import "./util/cronjobs";
 
 const app = express();
 app.use(bodyParser.json());
@@ -27,4 +27,5 @@ app.get("/start/:id", (req, res) => {
 app.listen(port, () => {
   databaseEmitter.emit(INITIALIZE_DATABASE);
   databaseEmitter.emit(SYNC_DATABASE);
+  console.log("hey")
 });

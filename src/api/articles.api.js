@@ -1,10 +1,10 @@
 import express from "express";
-import { Article, Feed } from "../database/index ";
+import { Article, Feed } from "../database/index";
 import {
   toiScraper,
   techRepublicScraper,
   indiaTimesScraper
-} from "../util/scrapers ";
+} from "../util/scrapers";
 let router = express.Router();
 
 router.get("/", async (req, res) => {

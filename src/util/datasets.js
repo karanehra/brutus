@@ -1,4 +1,4 @@
-import { Article } from "../database/index "
+import { Article } from "../database/index";
 
 export const getPerDayArticleData = async () => {
   let articles = await Article.findAll({});
@@ -12,9 +12,9 @@ export const getPerDayArticleData = async () => {
       dataset[createdDate] = 1;
     }
   });
-  return dataset
+  return dataset;
 };
 
- export default{
+export default {
   getPerDayArticleData
-}
+};

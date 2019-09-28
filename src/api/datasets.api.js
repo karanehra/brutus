@@ -1,8 +1,8 @@
 import express from "express";
-import { Article, Feed } from "../database/index ";
-import cache from "../redis ";
-import { ARTICLE_DATAPOINTS } from "../constants/cacheKeys ";
-import { getPerDayArticleData } from "../util/datasets ";
+import { Article, Feed } from "../database/index";
+import cache from "../redis";
+import { ARTICLE_DATAPOINTS } from "../constants/cacheKeys";
+import { getPerDayArticleData } from "../util/datasets";
 
 let router = express.Router();
 

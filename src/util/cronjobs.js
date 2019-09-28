@@ -1,7 +1,7 @@
-import cron from "node-cron "
-import { dumpFeedUrls, dumpArticles } from "./dumpers "
-import { bulkUpdatePipeline }from  "./parsePipelines "
-import Logger from "../util/logger "
+import cron from "node-cron"
+import { dumpFeedUrls, dumpArticles } from "./dumpers"
+import { bulkUpdatePipeline }from  "./parsePipelines"
+import Logger from "../util/logger"
 
 const logger = new Logger();
 

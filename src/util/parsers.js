@@ -1,5 +1,5 @@
-import parser from "rss-parser ";
-import { Feed, Article } from "../database/index ";
+import parser from "rss-parser";
+import { Feed, Article } from "../database/index";
 
 let Parser = new parser();
 

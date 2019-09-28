@@ -4,7 +4,7 @@ import {
   processFeedArticles,
   processFeed,
   parseFeedIfNotInDb
-}  from"./parsers "
+}  from"./parsers"
 // import cache  "../redis "
 // import { LAST_BULK_UPDATE } from "../constants/cacheKeys "
 

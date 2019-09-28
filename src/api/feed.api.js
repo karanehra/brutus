@@ -1,6 +1,6 @@
 import express from "express";
-import { Feed } from "../database/index ";
-import { getFreshUrls, additionPipeline } from "../util/pipeline ";
+import { Feed } from "../database/index";
+import { getFreshUrls, additionPipeline } from "../util/pipeline";
 let router = express.Router()
 
 router.post("/", async (req, res) => {

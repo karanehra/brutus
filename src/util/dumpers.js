@@ -1,6 +1,6 @@
-import fs from "fs ";
-import { Feed } from "../database ";
-import { Article } from "../database/index ";
+import fs from "fs";
+import { Feed } from "../database";
+import { Article } from "../database/index";
 
 export const dumpFeedUrls = async () => {
   try {

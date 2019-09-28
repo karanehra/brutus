@@ -1,4 +1,4 @@
-import { Log } from "../database/index ";
+import { Log } from "../database/index";
 export class Logger {
   success(title, description) {
     Log.create({

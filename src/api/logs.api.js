@@ -1,5 +1,5 @@
 import express from "express";
-import { Log } from "../database/index ";
+import { Log } from "../database/index";
 let router = express.Router();
 
 router.get("/", async (req, res) => {
