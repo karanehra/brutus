@@ -1,5 +1,5 @@
 import { Log } from "../database/index";
-export class Logger {
+export default class Logger {
   success(title, description) {
     Log.create({
       title: title,
