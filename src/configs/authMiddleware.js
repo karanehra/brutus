@@ -9,7 +9,7 @@ const authenticationMiddleware = (req, res, next) => {
     }
     jwt.verify(token, config.JWT_SECRET, (err, decoded) => {
       if (err) {
-        return res.json({
+        return res.status(401).send({
           success: false,
           message: "Token is not valid"
         });
@@ -19,7 +19,7 @@ const authenticationMiddleware = (req, res, next) => {
       }
     });
   } else {
-    return res.json({
+    return res.status(400).send({
       success: false,
       message: "Auth token is not supplied"
     });

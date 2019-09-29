@@ -17,9 +17,9 @@ router.post("/signup", async (req, res) => {
       passwordHash: hasher.digest("hex"),
       userType: req.body.userType
     });
-    res.send(user).status(200);
+    res.status(200).send(user);
   } catch (e) {
-    res.send(e).status(500);
+    res.status(500).send(e);
   }
 });
 
@@ -36,13 +36,12 @@ router.post("/login", async (req, res) => {
       let token = jwt.sign({ email: user.email }, config.JWT_SECRET, {
         expiresIn: "24h"
       });
-      res.send({ token }).status(200);
+      res.send({ token, user }).status(200);
     } else {
       res.sendStatus(401);
     }
   } catch (e) {
-    console.log(e);
-    res.send(e).status(500);
+    res.status(500).send(e);
   }
 });
 
