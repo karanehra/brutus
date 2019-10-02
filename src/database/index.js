@@ -6,6 +6,7 @@ import ArticleModel from "../models/article";
 import FeedModel from "../models/feed";
 import LogModel from "../models/log";
 import UserModel from "../models/user";
+import NoteModel from "../models/note";
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -30,5 +31,7 @@ export const Article = ArticleModel(sequelize, Sequelize);
 export const Feed = FeedModel(sequelize, Sequelize);
 export const Log = LogModel(sequelize, Sequelize);
 export const User = UserModel(sequelize, Sequelize);
+export const Note = NoteModel(sequelize, Sequelize);
 // Feed.hasMany(Article);
 Article.belongsTo(Feed);
+User.hasMany(Note, { foreignKey: { allowNull: false }, onDelete: "CASCADE" });
