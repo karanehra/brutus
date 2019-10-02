@@ -11,18 +11,18 @@ router.post("/", async (req, res) => {
   let freshUrls = await getFreshUrls(req.body.url);
 
   if (freshUrls.length === 0) {
-    res.send("No new feeds found").status(422);
+    res.status(422).send("No new feeds found");
   } else {
     additionPipeline(freshUrls);
     res
-      .send("Adding " + freshUrls.length + " of " + totalUrls + " provided")
-      .status(200);
+      .status(202)
+      .send("Adding " + freshUrls.length + " of " + totalUrls + " provided");
   }
 });
 
 router.get("/", async (req, res) => {
   let feeds = await Feed.findAll({});
-  res.send(feeds).status(200);
+  res.status(200).send(feeds);
 });
 
 export default router;

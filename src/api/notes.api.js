@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   const { title, description } = req.body;
   try {
-    let note = await Note.create({title,description});
+    let note = await Note.create({ title, description });
     res.status(201).send(note);
   } catch (e) {
     res.status(500).send(e);

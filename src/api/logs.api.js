@@ -8,9 +8,9 @@ router.use(authenticationMiddleware);
 router.get("/", async (req, res) => {
   try {
     let logs = await Log.findAll({});
-    res.send(logs).status(200);
+    res.status(200).send(logs);
   } catch (e) {
-    res.send("error").status(500);
+    res.status(500).send(e);
   }
 });
 
@@ -19,7 +19,7 @@ router.get("/clear", async (req, res) => {
     await Log.destroy({ where: {} });
     res.send("Logs Cleared !").status(200);
   } catch (e) {
-    res.send("Error Occured").status(500);
+    res.send(e).status(500);
   }
 });
 

@@ -11,12 +11,16 @@ let router = express.Router();
 router.use(authenticationMiddleware);
 
 router.get("/", async (req, res) => {
-  let articles = await Article.findAll({
-    limit: 100,
-    order: [["createdAt", "DESC"]],
-    include: [Feed]
-  });
-  res.send(articles).status(200);
+  try {
+    let articles = await Article.findAll({
+      limit: 100,
+      order: [["createdAt", "DESC"]],
+      include: [Feed]
+    });
+    res.status(200).send(articles);
+  } catch (e) {
+    res.status(500).send(e);
+  }
 });
 
 router.post("/parse", async (req, res) => {
