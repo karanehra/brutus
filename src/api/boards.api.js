@@ -7,12 +7,25 @@ router.use(authenticationMiddleware);
 
 router.get("/:id", async (req, res) => {
   try {
-    let notes = await Board.findAll({
+    let board = await Board.findAll({
       where: {
         userId: req.params.id
       }
     });
-    res.status(200).send(notes);
+    res.status(200).send(board);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    await Board.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+    res.status(200).send("ok");
   } catch (e) {
     res.status(500).send(e);
   }
