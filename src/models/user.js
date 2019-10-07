@@ -1,12 +1,19 @@
 import { Schema, model } from "mongoose";
 
 const userSchema = new Schema({
-  firstName: String,
-  lastName: String,
+  firstName: {
+    type: String,
+    match: /^[a-z]+$/i
+  },
+  lastName: {
+    type: String,
+    match: /^[a-z]+$/i
+  },
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    match: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
   },
   passwordHash: {
     type: String,
@@ -14,11 +21,11 @@ const userSchema = new Schema({
   },
   userType: {
     type: String,
-    enum: ['MASTER', 'USER', 'MANAGER'],
+    enum: ["MASTER", "USER", "MANAGER"],
     required: true
   }
-})
+});
 
-const User = model('User', userSchema)
+const User = model("User", userSchema);
 
-export default User
+export default User;
