@@ -5,7 +5,7 @@ import datasetsApiSet from "./datasets.api";
 import articlesApiSet from "./articles.api";
 import dumpsApiSet from "./dumps.api";
 import usersApiSet from "./user.api";
-import notesApiSet from "./notes.api";
+import cardssApiSet from "./cards.api";
 import boardsApiSet from "./boards.api";
 import testApiSet from "./test.api";
 
@@ -17,7 +17,7 @@ router.use("/articles", articlesApiSet);
 router.use("/datasets", datasetsApiSet);
 router.use("/dumps", dumpsApiSet);
 router.use("/users", usersApiSet);
-router.use("/notes", notesApiSet);
+router.use("/cards", cardssApiSet);
 router.use("/boards", boardsApiSet);
 router.use("/test", testApiSet);
 
