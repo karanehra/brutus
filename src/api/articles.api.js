@@ -8,7 +8,7 @@ import authenticationMiddleware from "../configs/authMiddleware";
 import Article from "../models/article";
 
 let router = express.Router();
-// router.use(authenticationMiddleware);
+router.use(authenticationMiddleware);
 
 router.get("/", async (req, res) => {
   try {

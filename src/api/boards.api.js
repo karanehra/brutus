@@ -3,7 +3,7 @@ import authenticationMiddleware from "../configs/authMiddleware";
 import Board from "../models/board";
 
 let router = express.Router();
-// router.use(authenticationMiddleware);
+router.use(authenticationMiddleware);
 
 router.get("/:id", async (req, res) => {
   try {

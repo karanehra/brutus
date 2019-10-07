@@ -4,7 +4,7 @@ import authenticationMiddleware from "../configs/authMiddleware";
 import Feed from '../models/feed';
 
 let router = express.Router();
-// router.use(authenticationMiddleware);
+router.use(authenticationMiddleware);
 
 router.post("/", async (req, res) => {
   let totalUrls = req.body.url.length;
