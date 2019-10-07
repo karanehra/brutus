@@ -1,9 +1,10 @@
 import express from "express";
-import { Article, Feed } from "../database/index";
 import cache from "../redis";
 import { ARTICLE_DATAPOINTS } from "../constants/cacheKeys";
 import { getPerDayArticleData } from "../util/datasets";
 import authenticationMiddleware from "../configs/authMiddleware";
+import Article from '../models/article';
+import Feed from '../models/feed';
 
 let router = express.Router();
 router.use(authenticationMiddleware);
@@ -34,8 +35,8 @@ router.get("/", async (req, res) => {
   if (val) {
     res.send(JSON.parse(val));
   } else {
-    let articleCount = await Article.count({});
-    let feedCount = await Feed.count({});
+    let articleCount = await Article.countDocuments({});
+    let feedCount = await Feed.countDocuments({});
     let payload = {
       articles: articleCount,
       feeds: feedCount

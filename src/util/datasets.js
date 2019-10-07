@@ -1,9 +1,10 @@
-import { Article } from "../database/index";
+import Article from '../models/article';
 
 export const getPerDayArticleData = async () => {
-  let articles = await Article.findAll({});
+  let articles = await Article.find();
   let dataset = {};
   articles.forEach(article => {
+    console.log(article)
     let date = new Date(article.createdAt);
     let createdDate = String(Date.parse(date.toISOString().split("T")[0]));
     if (Object.keys(dataset).includes(createdDate)) {
