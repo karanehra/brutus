@@ -69,8 +69,10 @@ export const addFeedsToDatabase = async payload => {
 };
 
 export const sanitizeString = datastring => {
-  let pattern = /(<([^>]+)>)/gi;
-  return datastring.replace(pattern, "").trim();
+  if (datastring) {
+    let pattern = /(<([^>]+)>)/gi;
+    return datastring.replace(pattern, "").trim();
+  }
 };
 
 export const additionPipeline = async data => {

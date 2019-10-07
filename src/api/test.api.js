@@ -4,7 +4,7 @@ import BrutusParser from "../util/brutusParser";
 let router = express.Router();
 
 router.post("/", async (req, res) => {
-  let parser = new BrutusParser(req.body.urls, "update");
+  let parser = new BrutusParser(req.body.urls, "fresh");
   await parser.startPipeline()
   // try {
   //   let board = await Board.findAll({

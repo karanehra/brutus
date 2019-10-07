@@ -11,7 +11,11 @@ const articleSchema = new Schema({
     unique: true
   },
   content: String,
-  snippet: String
+  snippet: String,
+  feedId: {
+    type: String,
+    required: true
+  }
 });
 
 const Article = model("Article", articleSchema);

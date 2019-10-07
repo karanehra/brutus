@@ -1,6 +1,7 @@
 import Feed from "../models/feed";
 import parser from "rss-parser";
 import { sanitizeString } from "./pipeline";
+import Article from '../models/article';
 
 export default class BrutusParser {
   urlArray = [];
@@ -9,6 +10,7 @@ export default class BrutusParser {
   rssParser = new parser();
   parsedFeedData = [];
   bulkFeedAdditionPayload = [];
+  bulkArticelAdditionPayload = [];
 
   /**
    * @param {Array<String>} urlArray An Array of RSS feed urls
@@ -57,10 +59,12 @@ export default class BrutusParser {
       await this.parseUrls();
       this.createBulkFeedAdditionPayload();
       await this.bulkWriteFeedsToDatabase();
-      this.createBulkArticleAdditionPayload();
+      await this.createBulkArticleAdditionPayload();
+      await this.bulkWriteArticlesToDatabase();
     } else {
       await this.parseUrls();
-      this.createBulkArticleAdditionPayload();
+      await this.createBulkArticleAdditionPayload();
+      await this.bulkWriteArticlesToDatabase();
     }
   }
 
@@ -76,17 +80,37 @@ export default class BrutusParser {
     this.bulkFeedAdditionPayload = payload;
   }
 
-  createBulkArticleAdditionPayload() {
-    // let payload = [];
-    this.parsedFeedData.forEach(feed => {
-      console.log(feed.feed.items);
-    });
-    // this.bulkFeedAdditionPayload = payload;
+  async createBulkArticleAdditionPayload() {
+    let payload = [];
+    for (let feed of this.parsedFeedData) {
+      let feedInstance = await Feed.findOne().where({
+        url: feed.feedUrl
+      });
+      feed.feed.items.forEach(data => {
+        payload.push({
+          title: sanitizeString(data.title),
+          link: sanitizeString(data.link),
+          content: sanitizeString(data.content),
+          snippet: sanitizeString(data.contentSnippet) || "",
+          feedId: feedInstance._id
+        });
+      });
+    }
+    this.bulkArticelAdditionPayload = payload;
   }
 
   async bulkWriteFeedsToDatabase() {
     try {
       let a = await Feed.insertMany(this.bulkFeedAdditionPayload);
+      console.log(a);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async bulkWriteArticlesToDatabase() {
+    try {
+      let a = await Article.insertMany(this.bulkArticelAdditionPayload);
       console.log(a);
     } catch (e) {
       console.log(e);
