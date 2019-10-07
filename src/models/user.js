@@ -1,31 +1,24 @@
-export default (sequelize, types) => {
-  const user = sequelize.define("user", {
-    firstname: {
-      type: types.STRING,
-      allowNull: false,
-      validate: {
-        is: /^[a-z]+$/i
-      }
-    },
-    lastname: {
-      type: types.TEXT
-    },
-    userType: {
-      type: types.ENUM,
-      values: ["MASTER", "STANDARD", "ADMIN"],
-      allowNull: false
-    },
-    passwordHash: {
-      type: types.STRING,
-      allowNull: false
-    },
-    email: {
-      type: types.STRING,
-      validate: {
-        isEmail: true
-      },
-      unique: true
-    }
-  });
-  return user;
-};
+import { Schema, model } from "mongoose";
+
+const userSchema = new Schema({
+  firstName: String,
+  lastName: String,
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  passwordHash: {
+    type: String,
+    required: true
+  },
+  userType: {
+    type: String,
+    enum: ['MASTER', 'USER', 'MANAGER'],
+    required: true
+  }
+})
+
+const User = model('User', userSchema)
+
+export default User
