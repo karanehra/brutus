@@ -1,7 +1,7 @@
 import express from "express";
-import { Feed } from "../database/index";
 import { getFreshUrls, additionPipeline } from "../util/pipeline";
 import authenticationMiddleware from "../configs/authMiddleware";
+import Feed from '../models/feed';
 
 let router = express.Router();
 router.use(authenticationMiddleware);
@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  let feeds = await Feed.findAll({});
+  let feeds = await Feed.find();
   res.status(200).send(feeds);
 });
 
