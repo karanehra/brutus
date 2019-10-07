@@ -7,6 +7,7 @@ import dumpsApiSet from "./dumps.api";
 import usersApiSet from "./user.api";
 import notesApiSet from "./notes.api";
 import boardsApiSet from "./boards.api";
+import testApiSet from "./test.api";
 
 let router = express.Router();
 
@@ -18,5 +19,6 @@ router.use("/dumps", dumpsApiSet);
 router.use("/users", usersApiSet);
 router.use("/notes", notesApiSet);
 router.use("/boards", boardsApiSet);
+router.use("/test", testApiSet);
 
 export default router;

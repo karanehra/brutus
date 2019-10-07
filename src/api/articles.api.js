@@ -1,23 +1,21 @@
 import express from "express";
-import { Article, Feed } from "../database/index";
 import {
   toiScraper,
   techRepublicScraper,
   indiaTimesScraper
 } from "../util/scrapers";
 import authenticationMiddleware from "../configs/authMiddleware";
+import Article from "../models/article";
 
 let router = express.Router();
 router.use(authenticationMiddleware);
 
 router.get("/", async (req, res) => {
   try {
-    let articles = await Article.findAll({
-      limit: 100,
-      order: [["createdAt", "DESC"]],
-      include: [Feed]
+    let articles = await Article.find().limit(100);
+    res.status(200).send({
+      data: articles
     });
-    res.status(200).send(articles);
   } catch (e) {
     res.status(500).send(e);
   }

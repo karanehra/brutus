@@ -44,9 +44,11 @@
     "sequelize": "^5.16.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@types/jest": "^24.0.13",
     "@types/node": "^12.0.3",
     "artillery": "^1.6.0-28",
+    "babel-eslint": "^10.0.3",
     "eslint": "^6.3.0",
     "jest": "^24.8.0"
   }
