@@ -7,3 +7,4 @@ report*
 package-lock.json
 ecosystem*
 dumps
+.DS_Store
