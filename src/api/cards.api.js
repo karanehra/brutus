@@ -17,10 +17,20 @@ router.get("/:boardId", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { title, description, boardId } = req.body;
+  const { title, boardId } = req.body;
   try {
-    let note = await Card.create({ title, description, boardId });
+    let note = await Card.create({ title, boardId });
     res.status(201).send(note);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  const { title, boardId } = req.body;
+  try {
+    let note = await Card.findByIdAndUpdate(req.params.id, { title, boardId });
+    res.status(200).send(note);
   } catch (e) {
     res.status(500).send(e);
   }
