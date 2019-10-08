@@ -27,9 +27,9 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  const { title, boardId } = req.body;
+  const { boardId } = req.body;
   try {
-    let note = await Card.findByIdAndUpdate(req.params.id, { title, boardId });
+    let note = await Card.findByIdAndUpdate(req.params.id, { boardId });
     res.status(200).send(note);
   } catch (e) {
     res.status(500).send(e);
