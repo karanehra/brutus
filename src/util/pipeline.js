@@ -1,4 +1,4 @@
-import { Feed } from "../database/index";
+import { Feed } from "../models/feed";
 import parser from "rss-parser";
 let Parser = new parser();
 
@@ -9,11 +9,7 @@ let Parser = new parser();
 export const getFreshUrls = async urlArray => {
   let newUrls = [];
   for (let url of urlArray) {
-    let count = await Feed.count({
-      where: {
-        url: url
-      }
-    });
+    let count = 0;
     console.log(count);
     if (count === 0) newUrls.push(url);
   }
