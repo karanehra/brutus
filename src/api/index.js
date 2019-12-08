@@ -9,6 +9,7 @@ import cardssApiSet from "./cards.api";
 import boardsApiSet from "./boards.api";
 import testApiSet from "./test.api";
 import treeApiSet from "./tree.api";
+import nodeApiSet from "./node.api";
 
 let router = express.Router();
 
@@ -22,5 +23,6 @@ router.use("/cards", cardssApiSet);
 router.use("/boards", boardsApiSet);
 router.use("/test", testApiSet);
 router.use("/tree", treeApiSet);
+router.use("/node", nodeApiSet);
 
 export default router;

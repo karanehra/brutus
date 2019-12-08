@@ -1,18 +1,18 @@
 import { Schema, model } from "mongoose";
 
-const treeSchema = new Schema(
+const treeNodeSchema = new Schema(
   {
     title: {
       required: true,
       type: String
     },
-    representation: {
-      required: true,
-      type: Object
-    },
-    userID: {
+    parent: {
       required: true,
       type: String
+    },
+    children: {
+      required: true,
+      type: Array
     }
   },
   {
@@ -23,6 +23,6 @@ const treeSchema = new Schema(
   }
 );
 
-const Tree = model("Tree", treeSchema);
+const Node = model("Node", treeNodeSchema);
 
-export default Tree;
+export default Node;

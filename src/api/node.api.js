@@ -3,15 +3,15 @@ import {
   sendSuccessResponse,
   sendServerErrorResponse
 } from "../util/responseHandlers";
-import Tree from "../models/tree";
+import Node from "../models/treeNode";
 
 let router = express.Router();
 
 router.post("/", async (req, res) => {
-  const { title, representation, userID } = req.body;
+  const { title, parent, children } = req.body;
   try {
-    let tree = await Tree.create({ title, representation, userID });
-    sendSuccessResponse(res, tree);
+    let node = await Node.create({ title, parent, children });
+    sendSuccessResponse(res, node);
   } catch (e) {
     sendServerErrorResponse(res, e);
   }
