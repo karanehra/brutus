@@ -3,8 +3,9 @@ import cache from "../redis";
 import { ARTICLE_DATAPOINTS } from "../constants/cacheKeys";
 import { getPerDayArticleData } from "../util/datasets";
 import authenticationMiddleware from "../configs/authMiddleware";
-import Article from '../models/article';
-import Feed from '../models/feed';
+import Article from "../models/article";
+import Feed from "../models/feed";
+import { sendSuccessResponse } from "../util/responseHandlers";
 
 let router = express.Router();
 router.use(authenticationMiddleware);
@@ -26,14 +27,14 @@ router.get("/dataset", async (req, res) => {
       dailyCount: dataset2
     };
     cache.set(ARTICLE_DATAPOINTS, JSON.stringify(finalSet), "EX", 86400);
-    res.send(finalSet);
+    sendSuccessResponse(res, finalSet);
   }
 });
 
 router.get("/", async (req, res) => {
   let val = await cache.get("appStatus ");
   if (val) {
-    res.send(JSON.parse(val));
+    sendSuccessResponse(res, JSON.parse(val));
   } else {
     let articleCount = await Article.countDocuments({});
     let feedCount = await Feed.countDocuments({});
@@ -42,7 +43,7 @@ router.get("/", async (req, res) => {
       feeds: feedCount
     };
     cache.set("appStatus", JSON.stringify(payload), "EX", 60);
-    res.send(payload);
+    sendSuccessResponse(res, 200);
   }
 });
 

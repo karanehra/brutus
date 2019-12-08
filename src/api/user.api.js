@@ -3,6 +3,12 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import config from "../configs/index";
 import User from "../models/user";
+import {
+  sendCreatedResponse,
+  sendServerErrorResponse,
+  sendSuccessResponse,
+  sendUnauthorizedResponse
+} from "../util/responseHandlers";
 
 let router = express.Router();
 
@@ -11,19 +17,19 @@ router.post("/signup", async (req, res) => {
   const { firstName, lastName, email, password, userType } = req.body;
   hasher.update(password);
   try {
-    let a = await User.create({
+    let data = await User.create({
       firstName,
       lastName,
       userType,
       email,
       passwordHash: hasher.digest("hex")
     });
-    res.status(201).send({
+    sendCreatedResponse(res, {
       message: "Created New User",
-      data: a
+      data
     });
   } catch (e) {
-    res.status(500).send({
+    sendServerErrorResponse(res, {
       message: "Error Occured",
       data: e
     });
@@ -34,24 +40,24 @@ router.post("/login", async (req, res) => {
   let hasher = crypto.createHash("sha256");
   const { email, password } = req.body;
   try {
-    let user = await User.findOne({email});
+    let user = await User.findOne({ email });
     hasher.update(password);
     if (user.passwordHash === hasher.digest("hex")) {
       let token = jwt.sign({ email: user.email }, config.JWT_SECRET, {
         expiresIn: "24h"
       });
-      res.status(200).send({
+      sendSuccessResponse(res, {
         message: "",
         data: user,
         token
       });
     } else {
-      res.status(401).send({
+      sendUnauthorizedResponse(res, {
         message: "Inorrect Credentials"
       });
     }
   } catch (e) {
-    res.status(500).send(e);
+    sendServerErrorResponse(res, e);
   }
 });
 

@@ -1,6 +1,6 @@
 import express from "express";
 import { databaseEmitter } from "./emitters/index";
-import { INITIALIZE_DATABASE, SYNC_DATABASE } from "./constants/events"
+import { INITIALIZE_DATABASE, SYNC_DATABASE } from "./constants/events";
 import cors from "cors";
 import bodyParser from "body-parser";
 import apis from "./api";
@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 app.use("/", apis);
 

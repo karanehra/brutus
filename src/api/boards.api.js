@@ -2,6 +2,11 @@ import express from "express";
 import authenticationMiddleware from "../configs/authMiddleware";
 import Board from "../models/board";
 import Card from "../models/card";
+import {
+  sendSuccessResponse,
+  sendServerErrorResponse,
+  sendCreatedResponse
+} from "../util/responseHandlers";
 
 let router = express.Router();
 router.use(authenticationMiddleware);
@@ -17,9 +22,9 @@ router.get("/:id", async (req, res) => {
         cards
       });
     }
-    res.status(200).send(responseData);
+    sendSuccessResponse(res, responseData);
   } catch (e) {
-    res.status(500).send(e);
+    sendServerErrorResponse(res, e);
   }
 });
 
@@ -30,10 +35,10 @@ router.delete("/:id", async (req, res) => {
     });
     await Card.deleteMany().where({
       boardId: req.params.id
-    })
-    res.status(200).send("ok");
+    });
+    sendSuccessResponse(res, { message: "Ok" });
   } catch (e) {
-    res.status(500).send(e);
+    sendServerErrorResponse(res, e);
   }
 });
 
@@ -41,9 +46,9 @@ router.post("/", async (req, res) => {
   const { title, userId } = req.body;
   try {
     let board = await Board.create({ title, userId });
-    res.status(201).send(board);
+    sendCreatedResponse(res, board);
   } catch (e) {
-    res.status(500).send(e);
+    sendServerErrorResponse(res, e);
   }
 });
 

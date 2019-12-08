@@ -1,6 +1,10 @@
 import express from "express";
 import { Log } from "../database/index";
 import authenticationMiddleware from "../configs/authMiddleware";
+import {
+  sendSuccessResponse,
+  sendServerErrorResponse
+} from "../util/responseHandlers";
 
 let router = express.Router();
 router.use(authenticationMiddleware);
@@ -8,18 +12,18 @@ router.use(authenticationMiddleware);
 router.get("/", async (req, res) => {
   try {
     let logs = await Log.findAll({});
-    res.status(200).send(logs);
+    sendSuccessResponse(res, logs);
   } catch (e) {
-    res.status(500).send(e);
+    sendServerErrorResponse(res, e);
   }
 });
 
 router.get("/clear", async (req, res) => {
   try {
     await Log.destroy({ where: {} });
-    res.send("Logs Cleared !").status(200);
+    sendSuccessResponse(res, { data: "Logs Cleared !" });
   } catch (e) {
-    res.send(e).status(500);
+    sendServerErrorResponse(res, e);
   }
 });
 

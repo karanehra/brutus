@@ -1,6 +1,11 @@
 import express from "express";
 import authenticationMiddleware from "../configs/authMiddleware";
 import Card from "../models/card";
+import {
+  sendSuccessResponse,
+  sendServerErrorResponse,
+  sendCreatedResponse
+} from "../util/responseHandlers";
 
 let router = express.Router();
 router.use(authenticationMiddleware);
@@ -10,9 +15,9 @@ router.get("/:boardId", async (req, res) => {
     let notes = await Card.find().where({
       boardId: req.params.boardId
     });
-    res.status(200).send(notes);
+    sendSuccessResponse(res, notes);
   } catch (e) {
-    res.status(500).send(e);
+    sendServerErrorResponse(res, e);
   }
 });
 
@@ -20,9 +25,9 @@ router.post("/", async (req, res) => {
   const { title, boardId } = req.body;
   try {
     let note = await Card.create({ title, boardId });
-    res.status(201).send(note);
+    sendCreatedResponse(res, note);
   } catch (e) {
-    res.status(500).send(e);
+    sendServerErrorResponse(res, e);
   }
 });
 
@@ -30,9 +35,9 @@ router.put("/:id", async (req, res) => {
   const { boardId } = req.body;
   try {
     let note = await Card.findByIdAndUpdate(req.params.id, { boardId });
-    res.status(200).send(note);
+    sendSuccessResponse(res, note);
   } catch (e) {
-    res.status(500).send(e);
+    sendServerErrorResponse(res, e);
   }
 });
 

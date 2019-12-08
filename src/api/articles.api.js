@@ -6,6 +6,10 @@ import {
 } from "../util/scrapers";
 import authenticationMiddleware from "../configs/authMiddleware";
 import Article from "../models/article";
+import {
+  sendSuccessResponse,
+  sendServerErrorResponse
+} from "../util/responseHandlers";
 
 let router = express.Router();
 router.use(authenticationMiddleware);
@@ -13,11 +17,9 @@ router.use(authenticationMiddleware);
 router.get("/", async (req, res) => {
   try {
     let articles = await Article.find().limit(100);
-    res.status(200).send({
-      data: articles
-    });
+    sendSuccessResponse(res, { data: articles });
   } catch (e) {
-    res.status(500).send(e);
+    sendServerErrorResponse(res, e);
   }
 });
 
