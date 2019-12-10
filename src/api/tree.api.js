@@ -17,6 +17,19 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.patch("/:id", async (req, res) => {
+  const { title, representation } = req.body;
+  let updatePatch = { title, representation };
+  try {
+    let tree = await Tree.findByIdAndUpdate(req.params.id, updatePatch, {
+      new: true
+    });
+    sendSuccessResponse(res, tree);
+  } catch (e) {
+    sendServerErrorResponse(res, e);
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     let tree = await Tree.findById(req.params.id);
