@@ -6,13 +6,17 @@ const treeNodeSchema = new Schema(
       required: true,
       type: String
     },
-    parent: {
+    treeID: {
       required: true,
       type: String
     },
     children: {
       required: true,
       type: Array
+    },
+    ID: {
+      required: true,
+      type: String
     }
   },
   {
