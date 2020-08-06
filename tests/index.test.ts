@@ -1,7 +1,6 @@
-import Main from "../src";
+import { app } from "../src/app";
+import Express from "express";
 
-let main = new Main();
-
-test("Main class test", () => {
-  expect(main).toBeInstanceOf(Main);
+test("Express App test", () => {
+  expect(app).toBeInstanceOf(Express);
 });

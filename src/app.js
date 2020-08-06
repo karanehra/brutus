@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import apis from "./api";
 import "./database";
 
-const app = express();
+export const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
