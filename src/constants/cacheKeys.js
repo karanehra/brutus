@@ -1,2 +1,0 @@
-export const ARTICLE_DATAPOINTS = "ARTICLE_DATA";
-export const LAST_BULK_UPDATE = "LAST_BULK_UPDATE";

@@ -1,10 +1,6 @@
-/node_modules/
-/.vscode/
+*.sh
 node_modules
-build
-.env
-report*
-package-lock.json
-ecosystem*
-dumps
 .DS_Store
+dist
+*.csv
+*.txt

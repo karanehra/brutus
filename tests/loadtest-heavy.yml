@@ -1,9 +1,0 @@
-config:
-  target: http://35.238.236.191
-  phases:
-    - duration: 240
-      arrivalRate: 20
-scenarios:
-  - flow:
-      - get:
-          url: "/"
