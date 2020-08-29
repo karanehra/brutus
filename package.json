@@ -19,6 +19,8 @@
     "@types/luxon": "^1.24.3"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "@types/mongoose": "^5.7.36",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.2"
   }
 }

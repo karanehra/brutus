@@ -4,4 +4,8 @@ const login = async (req: Request, res: Response) => {
   res.send('Hello login')
 }
 
-export default { login }
+const signup = async (req: Request, res: Response) => {
+  res.send('hello signup')
+}
+
+export default { login, signup }
