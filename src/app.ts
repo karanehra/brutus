@@ -9,3 +9,5 @@ app.listen(process.env.PORT, err => {
   if (err) return console.error(err)
   return console.info('Brutus Is Online...')
 })
+
+export default app

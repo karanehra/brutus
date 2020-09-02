@@ -6,7 +6,7 @@
     "start": "tsc && node dist/app.js",
     "build": "tsc",
     "watch": "tsc-watch --onSuccess 'node ./dist/app.js'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "Karan Nehra",
@@ -19,11 +19,17 @@
     "@types/luxon": "^1.24.3"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-typescript": "^7.10.4",
+    "@types/jest": "^26.0.13",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/mongoose": "^5.7.36",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
+    "jest": "^26.4.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.2"
+    "mongoose": "^5.10.2",
+    "supertest": "^4.0.2",
+    "ts-jest": "^26.3.0"
   }
 }
