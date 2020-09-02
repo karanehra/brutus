@@ -1,10 +1,9 @@
 import Express from 'express'
+import baseRouter from './routes/index'
 
 const app = Express()
 
-app.get('/', (_, res) => {
-  res.send('hey')
-})
+app.use(baseRouter)
 
 app.listen(process.env.PORT, err => {
   if (err) return console.error(err)
