@@ -24,6 +24,8 @@
     "@types/jest": "^26.0.13",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/mongoose": "^5.7.36",
+    "@types/supertest": "^2.0.10",
+    "body-parser": "^1.19.0",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
     "jest": "^26.4.2",
