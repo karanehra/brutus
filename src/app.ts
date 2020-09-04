@@ -5,13 +5,10 @@ import baseRouter from './routes/index'
 const app = Express()
 app.use(bodyParser.json())
 
-app.use(baseRouter)
-
-app.use((err: Error, req, res, next) => {
-  console.log('test:', err)
+app.use(function (err: Error, req, res, next) {
   res.status(500).send(err)
-  next()
 })
+app.use(baseRouter)
 
 let server = app.listen(process.env.PORT, err => {
   if (err) return console.error(err)
