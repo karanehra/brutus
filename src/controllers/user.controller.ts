@@ -23,8 +23,11 @@ const login = async (req: Request, res: Response) => {
 }
 
 const signup = async (req: Request, res: Response) => {
-  let hasher = crypto.createHash('sha256')
   const { firstName, lastName, email, password, userType } = req.body
+  if (!password) {
+    return res.status(400).send({ message: 'Field password is missing' })
+  }
+  let hasher = crypto.createHash('sha256')
   hasher.update(password)
   let data = await User.create({
     firstName,

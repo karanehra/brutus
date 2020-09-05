@@ -5,7 +5,7 @@
   "scripts": {
     "start": "tsc && node dist/app.js",
     "build": "tsc",
-    "watch": "tsc-watch --onSuccess 'node ./dist/src/app.js'",
+    "watch": "tsc-watch --onSuccess 'node ./dist/app.js'",
     "test": "jest"
   },
   "keywords": [],
