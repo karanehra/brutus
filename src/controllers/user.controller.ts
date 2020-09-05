@@ -36,6 +36,7 @@ const signup = async (req: Request, res: Response) => {
     email,
     passwordHash: hasher.digest('hex'),
   })
+  delete data.passwordHash
   res.status(201).send({ message: 'Created New User', data })
 }
 
