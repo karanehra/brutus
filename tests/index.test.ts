@@ -34,6 +34,7 @@ describe('User controller', () => {
       .send({ password: 'Hello', email: 'karan@karan.com', userType: 'MASTER' })
       .expect(201)
       .end((err, res) => {
+        console.log(err)
         if (err) throw err
         done()
       })

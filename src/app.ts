@@ -8,9 +8,8 @@ app.use(bodyParser.json())
 app.use(baseRouter)
 
 app.use((err, req, res, next) => {
-  if (err._message) {
-    return res.status(400).send(err)
-  }
+  if (err._message) return res.status(400).send(err)
+
   res.status(500).send(err)
 })
 
