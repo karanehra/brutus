@@ -2,6 +2,12 @@ import { Request, Response } from 'express'
 import Job from '../models/job.model'
 import { JOB_STATUS } from '../constants/enums'
 
+const list = async (req: Request, res: Response) => {
+  const data = await Job.find()
+
+  res.status(200).json({ data, message: 'OK' })
+}
+
 const enqueue = async (req: Request, res: Response) => {
   const { name } = req.body
 
@@ -26,4 +32,4 @@ const requeue = async (req: Request, res: Response) => {
   res.status(200).json({ message: 'Job Queued' })
 }
 
-export default { enqueue, cancel, requeue }
+export default { list, enqueue, cancel, requeue }
