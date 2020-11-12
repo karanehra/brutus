@@ -4,18 +4,23 @@ import User from '../models/user.model'
 import jwt from 'jsonwebtoken'
 
 const login = async (req: Request, res: Response) => {
-  let hasher = crypto.createHash('sha256')
   const { email, password } = req.body
-  let user = await User.findOne({ email })
+
+  const user = await User.findOne({ email }).lean()
+
+  const hasher = crypto.createHash('sha256')
   hasher.update(password)
+
   if (user.passwordHash === hasher.digest('hex')) {
-    let token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
       expiresIn: '24h',
     })
+
+    delete user.passwordHash
+
     res.status(200).send({
       message: '',
-      data: user,
-      token,
+      data: { ...user, token },
     })
   } else {
     res.status(401).send({ message: 'Inorrect Credentials' })
@@ -24,19 +29,24 @@ const login = async (req: Request, res: Response) => {
 
 const signup = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password, userType } = req.body
+
   if (!password) {
     return res.status(400).send({ message: 'Field password is missing' })
   }
-  let hasher = crypto.createHash('sha256')
+
+  const hasher = crypto.createHash('sha256')
   hasher.update(password)
-  let data = await User.create({
+
+  const data = await User.create({
     firstName,
     lastName,
     userType,
     email,
     passwordHash: hasher.digest('hex'),
   })
+
   delete data.passwordHash
+
   res.status(201).send({ message: 'Created New User', data })
 }
 

@@ -10,6 +10,7 @@ app.use(cors())
 app.use(baseRouter)
 
 app.use((err, req, res, next) => {
+  console.log(err)
   if (err._message) return res.status(400).send(err)
 
   res.status(500).send(err)
