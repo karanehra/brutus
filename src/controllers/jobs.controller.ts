@@ -17,15 +17,15 @@ const enqueue = async (req: Request, res: Response) => {
 }
 
 const cancel = async (req: Request, res: Response) => {
-  const { jobID } = req.query
+  const { jobID } = req.params
 
-  await Job.findByIdAndUpdate(jobID, { status: JOB_STATUS.CANCELED })
+  await Job.updateOne({ _id: jobID }, { status: JOB_STATUS.CANCELED })
 
   res.status(200).json({ message: 'Job Dequeued' })
 }
 
 const requeue = async (req: Request, res: Response) => {
-  const { jobID } = req.query
+  const { jobID } = req.params
 
   await Job.findByIdAndUpdate(jobID, { status: JOB_STATUS.QUEUED })
 

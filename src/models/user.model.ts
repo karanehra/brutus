@@ -1,4 +1,5 @@
 import { Schema, model, Document } from 'mongoose'
+import { USER_TYPE } from '../constants/enums'
 
 interface iUser extends Document {
   firstName: String
@@ -30,7 +31,7 @@ const userSchema = new Schema(
     },
     userType: {
       type: String,
-      enum: ['MASTER', 'USER', 'MANAGER'],
+      enum: Object.keys(USER_TYPE),
       required: true,
     },
   },

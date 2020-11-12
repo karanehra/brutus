@@ -4,3 +4,9 @@ export enum JOB_STATUS {
   COMPLETED = 'COMPLETED',
   CANCELED = 'CANCELED',
 }
+
+export enum USER_TYPE {
+  MASTER = 'MASTER',
+  USER = 'USER',
+  MANAGER = 'MANAGER',
+}

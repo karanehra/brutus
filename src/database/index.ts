@@ -7,6 +7,7 @@ mongoose.connect(`mongodb://localhost:27017/${databaseName}`, {
   useUnifiedTopology: true,
   useCreateIndex: true,
 })
+mongoose.set('useFindAndModify', false)
 
 let database = mongoose.connection
 

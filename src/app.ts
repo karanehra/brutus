@@ -9,17 +9,14 @@ app.use(bodyParser.json())
 app.use(cors())
 app.use(baseRouter)
 
-enum JOB_STATUS {
-  QUEUED = 'QUEUED',
-  RUNNING = 'RUNNING',
-  COMPLETED = 'COMPLETED',
-  CANCELED = 'CANCELED',
-}
-
 app.use((err, req, res, next) => {
   if (err._message) return res.status(400).send(err)
 
   res.status(500).send(err)
+})
+
+app.use(function (req, res, next) {
+  res.status(404).send({ message: 'Cannot find that URL.' })
 })
 
 let server = app.listen(process.env.PORT, err => {
