@@ -13,7 +13,7 @@ const login = async (req: Request, res: Response) => {
 
   if (user.passwordHash === hasher.digest('hex')) {
     const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
-      expiresIn: '30s',
+      expiresIn: '24h',
     })
 
     delete user.passwordHash

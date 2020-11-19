@@ -10,6 +10,6 @@ jobsRouter.use(authenticationMiddleware)
 jobsRouter.get('/', asyncErrorHandler(jobsController.list))
 jobsRouter.post('/enqueue', asyncErrorHandler(jobsController.enqueue))
 jobsRouter.get('/cancel/:jobID', asyncErrorHandler(jobsController.cancel))
-jobsRouter.post('/requeue/:jobID', asyncErrorHandler(jobsController.requeue))
+jobsRouter.get('/requeue/:jobID', asyncErrorHandler(jobsController.requeue))
 
 export default jobsRouter
