@@ -32,4 +32,21 @@ const requeue = async (req: Request, res: Response) => {
   res.status(200).json({ message: 'Job Queued' })
 }
 
-export default { list, enqueue, cancel, requeue }
+//put below controllers in other router
+
+const uploadRssFeeds = async (req: Request, res: Response) => {
+  let { feeds } = req.body.uploadRssFeeds
+  feeds = feeds.replace(/ /g, '|')
+
+  const feedData = feeds.split('|')
+
+  //add job for
+
+  res.status(200).json({ message: 'Received Feed Addition Request' })
+}
+
+const getRssFeeds = async (req: Request, res: Response) => {
+  res.status(200).json({ data: [], message: 'Ok' })
+}
+
+export default { list, enqueue, cancel, requeue, uploadRssFeeds, getRssFeeds }
