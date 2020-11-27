@@ -4,6 +4,7 @@ import { JOB_STATUS } from '../constants/enums'
 interface iJob extends Document {
   name: String
   status: JOB_STATUS
+  parameters?: string
 }
 
 const jobSchema = new Schema(
@@ -16,6 +17,9 @@ const jobSchema = new Schema(
       type: String,
       enum: Object.keys(JOB_STATUS),
       required: true,
+    },
+    parameters: {
+      type: String,
     },
   },
   {

@@ -8,6 +8,7 @@ const jobsRouter = Router()
 jobsRouter.use(authenticationMiddleware)
 
 jobsRouter.get('/', asyncErrorHandler(jobsController.list))
+jobsRouter.get('/types', asyncErrorHandler(jobsController.availableTypes))
 jobsRouter.post('/enqueue', asyncErrorHandler(jobsController.enqueue))
 jobsRouter.get('/cancel/:jobID', asyncErrorHandler(jobsController.cancel))
 jobsRouter.get('/requeue/:jobID', asyncErrorHandler(jobsController.requeue))

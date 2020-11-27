@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import Job from '../models/job.model'
-import { JOB_STATUS } from '../constants/enums'
+import { JOB_STATUS, JOB_TYPES } from '../constants/enums'
 
 const list = async (req: Request, res: Response) => {
   const data = await Job.find()
@@ -32,6 +32,10 @@ const requeue = async (req: Request, res: Response) => {
   res.status(200).json({ message: 'Job Queued' })
 }
 
+const availableTypes = async (req: Request, res: Response) => {
+  res.status(200).json({ data: Object.values(JOB_TYPES), message: 'Ok' })
+}
+
 //put below controllers in other router
 
 const uploadRssFeeds = async (req: Request, res: Response) => {
@@ -40,7 +44,11 @@ const uploadRssFeeds = async (req: Request, res: Response) => {
 
   const feedData = feeds.split('|')
 
-  //add job for
+  await Job.create({
+    status: JOB_STATUS.QUEUED,
+    name: JOB_TYPES.ADD_FEEDS,
+    parameters: JSON.stringify({ feeds: feedData }),
+  })
 
   res.status(200).json({ message: 'Received Feed Addition Request' })
 }
@@ -49,4 +57,4 @@ const getRssFeeds = async (req: Request, res: Response) => {
   res.status(200).json({ data: [], message: 'Ok' })
 }
 
-export default { list, enqueue, cancel, requeue, uploadRssFeeds, getRssFeeds }
+export default { list, enqueue, cancel, requeue, uploadRssFeeds, getRssFeeds, availableTypes }

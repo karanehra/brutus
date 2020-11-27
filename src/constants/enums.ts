@@ -10,3 +10,8 @@ export enum USER_TYPE {
   USER = 'USER',
   MANAGER = 'MANAGER',
 }
+
+export enum JOB_TYPES {
+  ADD_FEEDS = 'ADD_FEEDS',
+  UPDATE_FEEDS = 'UPDATE_FEEDS',
+}
